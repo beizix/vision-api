@@ -1,12 +1,16 @@
 package io.api.vision.support;
 
-import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import tools.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
-@AutoConfigureMockMvc // 시큐리티 필터 적용 (기본값 addFilters = true)
-public abstract class WebMvcTestBase {
+@SpringBootTest
+@AutoConfigureMockMvc
+@Transactional
+public abstract class IntegrationTestBase {
 
     @Autowired
     protected MockMvc mockMvc;
