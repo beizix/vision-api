@@ -54,6 +54,7 @@
 
 - 모든 객체 생성은 `new` 키워드를 사용한 **생성자 호출 방식**으로 통일합니다. (Lombok `@Builder` 지양)
 - **Record Class**: DTO, Command, 도메인 불변 객체는 `record` 타입을 적극 활용합니다.
+- **Spring Boot 4.0.1 특이 사항**: `@WebMvcTest` 사용 시 `import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;` 경로를 사용해야 합니다.
 
 ---
 
