@@ -67,7 +67,7 @@ io.api.vision/
 |   `-- adapters
 |       `-- persistence
 |           |-- entity
-|           |   `-- <NAME>Entity.java
+|           |   `-- <NAME>Entity.java (모든 엔티티는 AuditEntity를 상속받고, @SQLRestriction(value = "deleted = false")를 추가해야 합니다.)
 |           `-- repository
 |               `-- <NAME>Repository.java
 `-- useCases
@@ -93,7 +93,7 @@ io.api.vision/
 
 ### `config` (설정 계층)
 
-가장 외부에 위치한 계층으로, 전체 설정을 담당합니다. 이 계층은 다른 모든 계층(application, adapters 등)을 참조할 수 있습니다. 하지만 어떤 계층도 `config` 계층을 직접 참조해서는
+가장 외부에 위치한 계층으로, 전역적인 애플리케이션 설정을 담당합니다. 이 계층은 다른 모든 계층(application, adapters 등)을 참조할 수 있습니다. 하지만 어떤 계층도 `config` 계층을 직접 참조해서는
 안 됩니다. `config/` 패키지가 이 계층의 기본 경로입니다.
 
 ### `application` (애플리케이션의 핵심)
