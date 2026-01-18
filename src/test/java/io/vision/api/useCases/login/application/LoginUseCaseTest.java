@@ -40,7 +40,8 @@ class LoginUseCaseTest {
     String password = "password";
     String encodedPassword = "encodedPassword";
     LoginCmd cmd = new LoginCmd(email, password);
-    LoginUser user = new LoginUser(UUID.randomUUID(), email, encodedPassword, Role.ROLE_USER);
+    LoginUser user =
+        new LoginUser(UUID.randomUUID(), email, encodedPassword, "Test User", Role.ROLE_USER);
 
     given(loginPortOut.loadUser(email)).willReturn(Optional.of(user));
     given(passwordEncoder.matches(password, encodedPassword)).willReturn(true);

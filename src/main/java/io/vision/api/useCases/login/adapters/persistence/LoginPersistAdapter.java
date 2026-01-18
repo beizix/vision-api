@@ -20,6 +20,10 @@ public class LoginPersistAdapter implements LoginPortOut {
         .map(
             entity ->
                 new LoginUser(
-                    entity.getId(), entity.getEmail(), entity.getPassword(), entity.getRole()));
+                    entity.getId(),
+                    entity.getEmail(),
+                    entity.getPassword(),
+                    entity.getDisplayName(),
+                    entity.getRole()));
   }
 }

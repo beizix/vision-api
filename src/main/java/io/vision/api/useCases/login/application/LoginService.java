@@ -29,6 +29,6 @@ public class LoginService implements LoginUseCase {
     }
 
     return jwtUseCase.createToken(
-        new AuthCmd(user.email(), java.util.Collections.singletonList(user.role())));
+        new AuthCmd(user.email(), user.displayName(), java.util.Collections.singletonList(user.role())));
   }
 }

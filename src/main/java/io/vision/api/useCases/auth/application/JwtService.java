@@ -33,8 +33,8 @@ public class JwtService implements JwtUseCase {
   @Override
   public AuthToken createToken(AuthCmd cmd) {
     var roles = cmd.roles().stream().map(Enum::name).toList();
-    String accessToken = createToken(cmd.email(), roles, accessTokenValidity);
-    String refreshToken = createToken(cmd.email(), roles, refreshTokenValidity);
+    String accessToken = createToken(cmd.email(), cmd.displayName(), roles, accessTokenValidity);
+    String refreshToken = createToken(cmd.email(), cmd.displayName(), roles, refreshTokenValidity);
     return new AuthToken(accessToken, refreshToken);
   }
 
@@ -54,8 +54,9 @@ public class JwtService implements JwtUseCase {
     try {
       Claims claims = parseClaims(cmd.refreshToken());
       String email = claims.getSubject();
+      String displayName = claims.get("displayName", String.class);
       // TODO: 추후 Refresh Token에도 role 정보를 포함할지 결정 필요. 현재는 빈 리스트 전달.
-      return createToken(new AuthCmd(email, java.util.Collections.emptyList()));
+      return createToken(new AuthCmd(email, displayName, java.util.Collections.emptyList()));
     } catch (Exception e) {
       throw new IllegalArgumentException("Invalid refresh token", e);
     }
@@ -65,6 +66,16 @@ public class JwtService implements JwtUseCase {
   public String getSubject(String token) {
     try {
       return parseClaims(token).getSubject();
+    } catch (Exception e) {
+      throw new IllegalArgumentException("Invalid token", e);
+    }
+  }
+
+  @Override
+  public String getDisplayName(String token) {
+    try {
+      Claims claims = parseClaims(token);
+      return claims.get("displayName", String.class);
     } catch (Exception e) {
       throw new IllegalArgumentException("Invalid token", e);
     }
@@ -86,12 +97,14 @@ public class JwtService implements JwtUseCase {
     return Jwts.parser().verifyWith(key).build().parseSignedClaims(token).getPayload();
   }
 
-  private String createToken(String subject, java.util.List<String> roles, long validity) {
+  private String createToken(
+      String subject, String displayName, java.util.List<String> roles, long validity) {
     Date now = new Date();
     Date expiration = new Date(now.getTime() + validity);
 
     return Jwts.builder()
         .subject(subject)
+        .claim("displayName", displayName)
         .claim("roles", roles)
         .issuedAt(now)
         .expiration(expiration)

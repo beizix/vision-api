@@ -32,6 +32,6 @@ public class SignupService implements SignupUseCase {
     signupPortOut.save(user);
 
     return jwtUseCase.createToken(
-        new AuthCmd(user.email(), Collections.singletonList(user.role())));
+        new AuthCmd(user.email(), user.displayName(), Collections.singletonList(user.role())));
   }
 }

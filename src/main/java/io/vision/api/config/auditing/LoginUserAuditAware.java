@@ -15,12 +15,12 @@ public class LoginUserAuditAware implements AuditorAware<String> {
   public Optional<String> getCurrentAuditor() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-    if (authentication == null || !authentication.isAuthenticated()) {
+    if (authentication == null
+        || !authentication.isAuthenticated()
+        || "anonymousUser".equals(authentication.getName())) {
       return Optional.of("SYSTEM"); // 인증되지 않은 경우 "SYSTEM" 반환
     }
 
-    // 실제 애플리케이션에서는 UserDetails 객체에서 사용자 ID를 추출해야 합니다.
-    // 여기서는 간단하게 principal의 이름을 반환합니다.
     return Optional.of(authentication.getName());
   }
 }

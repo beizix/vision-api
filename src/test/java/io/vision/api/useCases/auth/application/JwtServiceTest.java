@@ -26,7 +26,7 @@ class JwtServiceTest {
   @DisplayName("Scenario: 성공 - 유효한 토큰 검증 시 true를 반환한다")
   void validate_token_success() {
     // Given
-    AuthCmd cmd = new AuthCmd("test@example.com", java.util.List.of(Role.ROLE_USER));
+    AuthCmd cmd = new AuthCmd("test@example.com", "Test User", java.util.List.of(Role.ROLE_USER));
     AuthToken token = jwtService.createToken(cmd);
     String accessToken = token.accessToken();
 
@@ -55,7 +55,7 @@ class JwtServiceTest {
   void get_subject_success() {
     // Given
     String email = "user@example.com";
-    AuthCmd cmd = new AuthCmd(email, java.util.List.of(Role.ROLE_USER));
+    AuthCmd cmd = new AuthCmd(email, "User", java.util.List.of(Role.ROLE_USER));
     AuthToken token = jwtService.createToken(cmd);
 
     // When
@@ -71,7 +71,7 @@ class JwtServiceTest {
     // Given
     String email = "admin@example.com";
     java.util.List<Role> roles = java.util.List.of(Role.ROLE_ADMIN, Role.ROLE_USER);
-    AuthCmd cmd = new AuthCmd(email, roles);
+    AuthCmd cmd = new AuthCmd(email, "Admin User", roles);
     AuthToken token = jwtService.createToken(cmd);
 
     // When
@@ -79,5 +79,21 @@ class JwtServiceTest {
 
     // Then
     assertThat(extractedRoles).containsExactlyInAnyOrder("ROLE_ADMIN", "ROLE_USER");
+  }
+
+  @Test
+  @DisplayName("Scenario: 성공 - 토큰에서 표시 이름(DisplayName) 추출")
+  void get_display_name_success() {
+    // Given
+    String email = "user@example.com";
+    String displayName = "Super User";
+    AuthCmd cmd = new AuthCmd(email, displayName, java.util.List.of(Role.ROLE_USER));
+    AuthToken token = jwtService.createToken(cmd);
+
+    // When
+    String extractedDisplayName = jwtService.getDisplayName(token.accessToken());
+
+    // Then
+    assertThat(extractedDisplayName).isEqualTo(displayName);
   }
 }
