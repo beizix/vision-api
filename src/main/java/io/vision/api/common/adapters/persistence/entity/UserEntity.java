@@ -37,12 +37,16 @@ public class UserEntity extends AuditEntity {
   private String password;
 
   @Column(nullable = false)
+  private String displayName;
+
+  @Column(nullable = false)
   @Enumerated(EnumType.STRING)
   private Role role;
 
-  public UserEntity(String email, String password, Role role) {
+  public UserEntity(String email, String password, String displayName, Role role) {
     this.email = email;
     this.password = password;
+    this.displayName = displayName;
     this.role = role;
   }
 }

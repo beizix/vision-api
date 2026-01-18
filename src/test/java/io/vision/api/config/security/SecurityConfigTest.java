@@ -42,14 +42,12 @@ class SecurityConfigTest {
   @Test
   @DisplayName("Scenario: 성공 - 인증 제외 경로(/api/v1/auth/**)는 토큰 없이 접근 가능하다")
   void access_public_endpoint_success() throws Exception {
-    mockMvc.perform(get("/api/v1/auth/test"))
-        .andExpect(status().isOk());
+    mockMvc.perform(get("/api/v1/auth/test")).andExpect(status().isOk());
   }
 
   @Test
   @DisplayName("Scenario: 실패 - 보호된 경로는 토큰 없이 접근 시 401/403 응답을 반환한다")
   void access_protected_endpoint_fail() throws Exception {
-    mockMvc.perform(get("/api/v1/users/test"))
-        .andExpect(status().isForbidden());
+    mockMvc.perform(get("/api/v1/users/test")).andExpect(status().isForbidden());
   }
 }

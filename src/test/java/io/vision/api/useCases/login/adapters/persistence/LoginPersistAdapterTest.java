@@ -4,8 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import io.vision.api.common.adapters.persistence.entity.UserEntity;
 import io.vision.api.common.adapters.persistence.repository.UserRepository;
-import io.vision.api.support.DataJpaTestBase;
 import io.vision.api.common.application.enums.Role;
+import io.vision.api.support.DataJpaTestBase;
 import io.vision.api.useCases.login.application.model.LoginUser;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
@@ -25,7 +25,7 @@ class LoginPersistAdapterTest extends DataJpaTestBase {
   void load_user_success() {
     // Given
     String email = "persist@test.com";
-    userRepository.save(new UserEntity(email, "password", Role.ROLE_USER));
+    userRepository.save(new UserEntity(email, "password", "Persist User", Role.ROLE_USER));
 
     // When
     Optional<LoginUser> result = loginPersistAdapter.loadUser(email);

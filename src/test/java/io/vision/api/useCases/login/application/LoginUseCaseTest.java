@@ -44,7 +44,8 @@ class LoginUseCaseTest {
 
     given(loginPortOut.loadUser(email)).willReturn(Optional.of(user));
     given(passwordEncoder.matches(password, encodedPassword)).willReturn(true);
-    given(jwtUseCase.createToken(any(AuthCmd.class))).willReturn(new AuthToken("access", "refresh"));
+    given(jwtUseCase.createToken(any(AuthCmd.class)))
+        .willReturn(new AuthToken("access", "refresh"));
 
     // When
     AuthToken token = loginService.operate(cmd);

@@ -129,6 +129,7 @@ io.vision.api/
   -   `WebAdapter`는 `UseCase` 인터페이스를 주입받아 호출함으로써 비즈니스 로직 실행을 위임합니다.
   -   `model` 디렉터리에는 요청/응답에 사용되는 데이터 전송 객체(Req/Res)가 위치합니다.
   -   사용자가 <ENDPOINT> 을 입력했다면 해당 URL 에 맞게 request mapping 을 선언해주면 됩니다.
+  -   **Swagger 적용**: 모든 WebAdapter 클래스에는 `@Tag`, 메서드에는 `@Operation` 및 `@ApiResponse`, 요청 파라미터(RequestBody 포함)에는 `@Parameter` 어노테이션을 반드시 추가하여 API 문서를 자동화합니다.
 
 -   `adapters/persistence/`: **영속성 어댑터**
   -   데이터베이스와의 상호작용을 담당합니다.
