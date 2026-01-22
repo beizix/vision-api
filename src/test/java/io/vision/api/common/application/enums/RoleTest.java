@@ -13,7 +13,7 @@ class RoleTest {
   @DisplayName("Scenario: 성공 - ROLE_USER는 ACCESS_USER_API 권한을 가진다")
   void role_user_has_user_api_privilege() {
     // Given
-    Role role = Role.ROLE_USER;
+    Role role = Role.USER;
 
     // When
     Set<Privilege> privileges = role.getPrivileges();
@@ -27,7 +27,7 @@ class RoleTest {
   @DisplayName("Scenario: 성공 - ROLE_MANAGER는 ACCESS_MANAGER_API 권한을 가진다")
   void role_manager_has_manager_api_privilege() {
     // Given
-    Role role = Role.ROLE_MANAGER;
+    Role role = Role.MANAGER;
 
     // When
     Set<Privilege> privileges = role.getPrivileges();

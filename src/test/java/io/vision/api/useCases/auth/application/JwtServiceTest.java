@@ -34,7 +34,7 @@ class JwtServiceTest {
   @DisplayName("Scenario: 성공 - 유효한 토큰 검증 시 true를 반환한다")
   void validate_token_success() {
     // Given
-    CreateTokenCmd cmd = new CreateTokenCmd("test@example.com", "Test User", List.of(Role.ROLE_USER));
+    CreateTokenCmd cmd = new CreateTokenCmd("test@example.com", "Test User", List.of(Role.USER));
     AuthToken token = jwtService.createToken(cmd);
     String accessToken = token.accessToken();
 
@@ -63,7 +63,7 @@ class JwtServiceTest {
   void get_subject_success() {
     // Given
     String email = "user@example.com";
-    CreateTokenCmd cmd = new CreateTokenCmd(email, "User", List.of(Role.ROLE_USER));
+    CreateTokenCmd cmd = new CreateTokenCmd(email, "User", List.of(Role.USER));
     AuthToken token = jwtService.createToken(cmd);
 
     // When
@@ -78,7 +78,7 @@ class JwtServiceTest {
   void get_roles_success() {
     // Given
     String email = "manager@example.com";
-    List<Role> roles = List.of(Role.ROLE_MANAGER, Role.ROLE_USER);
+    List<Role> roles = List.of(Role.MANAGER, Role.USER);
     CreateTokenCmd cmd = new CreateTokenCmd(email, "Manager User", roles);
 
     // When
@@ -93,7 +93,7 @@ class JwtServiceTest {
         .getPayload();
 
     assertThat(claims.getSubject()).isEqualTo(email);
-    
+
     @SuppressWarnings("unchecked")
     List<String> extractedRoles = claims.get("roles", List.class);
     assertThat(extractedRoles).containsExactlyInAnyOrder("ROLE_MANAGER", "ROLE_USER");
@@ -105,7 +105,7 @@ class JwtServiceTest {
     // Given
     String email = "user@example.com";
     String displayName = "Super User";
-    CreateTokenCmd cmd = new CreateTokenCmd(email, displayName, List.of(Role.ROLE_USER));
+    CreateTokenCmd cmd = new CreateTokenCmd(email, displayName, List.of(Role.USER));
     AuthToken token = jwtService.createToken(cmd);
 
     // When

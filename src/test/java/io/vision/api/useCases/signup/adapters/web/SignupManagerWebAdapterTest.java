@@ -34,14 +34,12 @@ class SignupManagerWebAdapterTest extends WebMvcTestBase {
 
     // When
     mockMvc.perform(post("/api/v1/signup/manager")
-            .content(json(req))
-            .contentType("application/json"))
+        .content(json(req))
+        .contentType("application/json"))
         .andExpect(status().isOk());
 
     // Then
-    verify(signupUseCase).operate(argThat(cmd ->
-        cmd.email().equals("manager@vision.io") &&
-            cmd.role() == Role.ROLE_MANAGER
-    ));
+    verify(signupUseCase).operate(argThat(cmd -> cmd.email().equals("manager@vision.io") &&
+        cmd.role() == Role.MANAGER));
   }
 }

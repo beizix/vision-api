@@ -24,13 +24,17 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @ExtendWith(MockitoExtension.class)
 class LoginUseCaseTest {
 
-  @InjectMocks private LoginService loginService;
+  @InjectMocks
+  private LoginService loginService;
 
-  @Mock private LoginPortOut loginPortOut;
+  @Mock
+  private LoginPortOut loginPortOut;
 
-  @Mock private PasswordEncoder passwordEncoder;
+  @Mock
+  private PasswordEncoder passwordEncoder;
 
-  @Mock private JwtUseCase jwtUseCase;
+  @Mock
+  private JwtUseCase jwtUseCase;
 
   @Test
   @DisplayName("Scenario: 성공 - 유효한 자격 증명으로 로그인 성공")
@@ -40,8 +44,7 @@ class LoginUseCaseTest {
     String password = "password";
     String encodedPassword = "encodedPassword";
     LoginCmd cmd = new LoginCmd(email, password);
-    LoginUser user =
-        new LoginUser(UUID.randomUUID(), email, encodedPassword, "Test User", Role.ROLE_USER);
+    LoginUser user = new LoginUser(UUID.randomUUID(), email, encodedPassword, "Test User", Role.USER);
 
     given(loginPortOut.loadUser(email)).willReturn(Optional.of(user));
     given(passwordEncoder.matches(password, encodedPassword)).willReturn(true);

@@ -27,7 +27,8 @@ class JwtAuthenticationFilterTest {
 
   private JwtAuthenticationFilter filter;
 
-  @Mock private JwtUseCase jwtUseCase;
+  @Mock
+  private JwtUseCase jwtUseCase;
 
   private MockHttpServletRequest request;
   private MockHttpServletResponse response;
@@ -53,7 +54,7 @@ class JwtAuthenticationFilterTest {
     // Given
     String token = "valid-token";
     String email = "test@example.com";
-    List<String> roles = List.of(Role.ROLE_MANAGER.name(), Role.ROLE_USER.name());
+    List<String> roles = List.of(Role.MANAGER.getAuthority(), Role.USER.getAuthority());
 
     request.addHeader("Authorization", "Bearer " + token);
 

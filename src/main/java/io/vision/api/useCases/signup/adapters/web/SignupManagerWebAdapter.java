@@ -33,7 +33,7 @@ public class SignupManagerWebAdapter {
   public SignupRes signupManager(
       @RequestBody @Parameter(description = "관리자 가입 정보", required = true) SignupManagerReq req) {
     AuthToken token = signupUseCase.operate(
-        new SignupCmd(req.email(), req.password(), req.displayName(), Role.ROLE_MANAGER));
+        new SignupCmd(req.email(), req.password(), req.displayName(), Role.MANAGER));
     return new SignupRes(token.accessToken(), token.refreshToken());
   }
 }

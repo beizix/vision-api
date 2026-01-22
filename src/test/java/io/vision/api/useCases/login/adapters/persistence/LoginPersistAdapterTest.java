@@ -13,19 +13,21 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 
-@Import({LoginPersistAdapter.class})
+@Import({ LoginPersistAdapter.class })
 class LoginPersistAdapterTest extends DataJpaTestBase {
 
-  @Autowired private LoginPersistAdapter loginPersistAdapter;
+  @Autowired
+  private LoginPersistAdapter loginPersistAdapter;
 
-  @Autowired private UserRepository userRepository;
+  @Autowired
+  private UserRepository userRepository;
 
   @Test
   @DisplayName("Scenario: 성공 - 이메일로 사용자를 조회하여 LoginUser 모델로 반환한다")
   void load_user_success() {
     // Given
     String email = "persist@test.com";
-    userRepository.save(new UserEntity(email, "password", "Persist User", Role.ROLE_USER));
+    userRepository.save(new UserEntity(email, "password", "Persist User", Role.USER));
 
     // When
     Optional<LoginUser> result = loginPersistAdapter.loadUser(email);
@@ -34,6 +36,6 @@ class LoginPersistAdapterTest extends DataJpaTestBase {
     assertThat(result).isPresent();
     assertThat(result.get().email()).isEqualTo(email);
     assertThat(result.get().id()).isNotNull();
-    assertThat(result.get().role()).isEqualTo(Role.ROLE_USER);
+    assertThat(result.get().role()).isEqualTo(Role.USER);
   }
 }

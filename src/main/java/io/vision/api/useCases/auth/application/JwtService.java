@@ -3,6 +3,7 @@ package io.vision.api.useCases.auth.application;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import io.vision.api.common.application.enums.Role;
 import io.vision.api.useCases.auth.application.model.CreateTokenCmd;
 import io.vision.api.useCases.auth.application.model.AuthToken;
 import io.vision.api.useCases.auth.application.model.RefreshTokenCmd;
@@ -32,7 +33,7 @@ public class JwtService implements JwtUseCase {
 
   @Override
   public AuthToken createToken(CreateTokenCmd cmd) {
-    var roles = cmd.roles().stream().map(Enum::name).toList();
+    var roles = cmd.roles().stream().map(Role::getAuthority).toList();
     String accessToken = createToken(cmd.email(), cmd.displayName(), roles, accessTokenValidity);
     String refreshToken = createToken(cmd.email(), cmd.displayName(), roles, refreshTokenValidity);
     return new AuthToken(accessToken, refreshToken);
