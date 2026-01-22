@@ -8,7 +8,7 @@
 
 프로젝트 초기 단계에서 인증(Authentication) 및 인가(Authorization) 구조를 설계하던 중, 다음과 같은 고민이 발생했다.
 
-1.  **관리자(Admin)와 일반 사용자(User)의 구분**: 별도의 `AdminEntity`와 `UserEntity`로 분리해야 하는가, 아니면 하나의 `UserEntity`로 통합해야 하는가?
+1.  **관리자(Manager)와 일반 사용자(User)의 구분**: 별도의 `ManagerEntity`와 `UserEntity`로 분리해야 하는가, 아니면 하나의 `UserEntity`로 통합해야 하는가?
 2.  **권한(Role) 관리 방식**: 사용자 권한을 `String`으로 관리할 것인가, `Enum`으로 관리할 것인가?
 3.  **확장성 고려**: 향후 소셜 로그인(OAuth2) 도입 시 현재 구조가 유효한가?
 
@@ -32,7 +32,7 @@
     ```java
     public enum Role {
         ROLE_USER,
-        ROLE_ADMIN
+        ROLE_MANAGER
     }
     ```
 *   **이유**:
@@ -51,4 +51,4 @@
 *   초기 개발 속도를 저해하지 않으면서도, 미래의 확장성(소셜 로그인 등)을 고려한 유연한 구조를 확보했다.
 
 ### 부정적 효과 (또는 고려사항)
-*   향후 관리자 전용 필드가 급격히 늘어날 경우 `UserEntity`가 비대해질 수 있다. 이 경우 1:1 관계의 `AdminProfile` 테이블 분리를 고려해야 한다.
+*   향후 관리자 전용 필드가 급격히 늘어날 경우 `UserEntity`가 비대해질 수 있다. 이 경우 1:1 관계의 `ManagerProfile` 테이블 분리를 고려해야 한다.

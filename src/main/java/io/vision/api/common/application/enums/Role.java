@@ -4,7 +4,7 @@ import java.util.Set;
 
 public enum Role {
   ROLE_USER(Set.of(Privilege.ACCESS_USER_API)),
-  ROLE_ADMIN(Set.of(Privilege.ACCESS_ADMIN_API));
+  ROLE_MANAGER(Set.of(Privilege.ACCESS_MANAGER_API));
 
   private final Set<Privilege> privileges;
 

@@ -20,6 +20,7 @@ import org.springframework.mock.web.MockFilterChain;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.GrantedAuthority;
 
 @ExtendWith(MockitoExtension.class)
 class JwtAuthenticationFilterTest {
@@ -52,7 +53,7 @@ class JwtAuthenticationFilterTest {
     // Given
     String token = "valid-token";
     String email = "test@example.com";
-    List<String> roles = List.of(Role.ROLE_ADMIN.name(), Role.ROLE_USER.name());
+    List<String> roles = List.of(Role.ROLE_MANAGER.name(), Role.ROLE_USER.name());
 
     request.addHeader("Authorization", "Bearer " + token);
 
@@ -70,8 +71,8 @@ class JwtAuthenticationFilterTest {
 
     // 검증: JwtUseCase에서 반환된 역할이 실제로 적용되었는지 확인
     assertThat(authentication.getAuthorities())
-        .extracting("authority")
-        .containsExactlyInAnyOrder("ROLE_ADMIN", "ROLE_USER");
+        .extracting(GrantedAuthority::getAuthority)
+        .containsExactlyInAnyOrder("ROLE_MANAGER", "ROLE_USER");
 
     verify(jwtUseCase).getRoles(token);
   }

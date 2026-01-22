@@ -13,8 +13,8 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 /**
- * 생성 및 수정 기록을 위한 공용 엔티티 속성. Admin 앱의 경우, LoginUserAuditAware.java (AuditorAware 구현체) 가 반환한 현재 작성자
- * 정보를 담는다.
+ * 생성 및 수정 기록을 위한 공용 엔티티 속성. Manager 앱의 경우, LoginUserAuditAware.java (AuditorAware 구현체) 가 반환한 현재 작성자
+ * 정보를 자동으로 기입합니다.
  */
 @EntityListeners(AuditingEntityListener.class)
 @MappedSuperclass

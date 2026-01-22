@@ -2,9 +2,15 @@ package io.vision.api.useCases.auth.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
 import io.vision.api.common.application.enums.Role;
 import io.vision.api.useCases.auth.application.model.CreateTokenCmd;
 import io.vision.api.useCases.auth.application.model.AuthToken;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import javax.crypto.SecretKey;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,17 +22,19 @@ class JwtServiceTest {
   private final String secret = "v-api-test-secret-key-must-be-long-enough-for-hs256";
   private final long accessValidity = 60000L; // 60초
   private final long refreshValidity = 120000L; // 120초
+  private SecretKey secretKey;
 
   @BeforeEach
   void setUp() {
     jwtService = new JwtService(secret, accessValidity, refreshValidity);
+    secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
   }
 
   @Test
   @DisplayName("Scenario: 성공 - 유효한 토큰 검증 시 true를 반환한다")
   void validate_token_success() {
     // Given
-    CreateTokenCmd cmd = new CreateTokenCmd("test@example.com", "Test User", java.util.List.of(Role.ROLE_USER));
+    CreateTokenCmd cmd = new CreateTokenCmd("test@example.com", "Test User", List.of(Role.ROLE_USER));
     AuthToken token = jwtService.createToken(cmd);
     String accessToken = token.accessToken();
 
@@ -55,7 +63,7 @@ class JwtServiceTest {
   void get_subject_success() {
     // Given
     String email = "user@example.com";
-    CreateTokenCmd cmd = new CreateTokenCmd(email, "User", java.util.List.of(Role.ROLE_USER));
+    CreateTokenCmd cmd = new CreateTokenCmd(email, "User", List.of(Role.ROLE_USER));
     AuthToken token = jwtService.createToken(cmd);
 
     // When
@@ -69,16 +77,26 @@ class JwtServiceTest {
   @DisplayName("Scenario: 성공 - 토큰에서 역할(Roles) 추출")
   void get_roles_success() {
     // Given
-    String email = "admin@example.com";
-    java.util.List<Role> roles = java.util.List.of(Role.ROLE_ADMIN, Role.ROLE_USER);
-    CreateTokenCmd cmd = new CreateTokenCmd(email, "Admin User", roles);
-    AuthToken token = jwtService.createToken(cmd);
+    String email = "manager@example.com";
+    List<Role> roles = List.of(Role.ROLE_MANAGER, Role.ROLE_USER);
+    CreateTokenCmd cmd = new CreateTokenCmd(email, "Manager User", roles);
 
     // When
-    java.util.List<String> extractedRoles = jwtService.getRoles(token.accessToken());
+    AuthToken authToken = jwtService.createToken(cmd);
 
     // Then
-    assertThat(extractedRoles).containsExactlyInAnyOrder("ROLE_ADMIN", "ROLE_USER");
+    String accessToken = authToken.accessToken();
+    Claims claims = Jwts.parser()
+        .verifyWith(secretKey)
+        .build()
+        .parseSignedClaims(accessToken)
+        .getPayload();
+
+    assertThat(claims.getSubject()).isEqualTo(email);
+    
+    @SuppressWarnings("unchecked")
+    List<String> extractedRoles = claims.get("roles", List.class);
+    assertThat(extractedRoles).containsExactlyInAnyOrder("ROLE_MANAGER", "ROLE_USER");
   }
 
   @Test
@@ -87,7 +105,7 @@ class JwtServiceTest {
     // Given
     String email = "user@example.com";
     String displayName = "Super User";
-    CreateTokenCmd cmd = new CreateTokenCmd(email, displayName, java.util.List.of(Role.ROLE_USER));
+    CreateTokenCmd cmd = new CreateTokenCmd(email, displayName, List.of(Role.ROLE_USER));
     AuthToken token = jwtService.createToken(cmd);
 
     // When

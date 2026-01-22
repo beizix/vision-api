@@ -20,20 +20,20 @@ class RoleTest {
 
     // Then
     assertThat(privileges).contains(Privilege.ACCESS_USER_API);
-    assertThat(privileges).doesNotContain(Privilege.ACCESS_ADMIN_API);
+    assertThat(privileges).doesNotContain(Privilege.ACCESS_MANAGER_API);
   }
 
   @Test
-  @DisplayName("Scenario: 성공 - ROLE_ADMIN은 ACCESS_ADMIN_API 권한을 가진다")
-  void role_admin_has_admin_api_privilege() {
+  @DisplayName("Scenario: 성공 - ROLE_MANAGER는 ACCESS_MANAGER_API 권한을 가진다")
+  void role_manager_has_manager_api_privilege() {
     // Given
-    Role role = Role.ROLE_ADMIN;
+    Role role = Role.ROLE_MANAGER;
 
     // When
     Set<Privilege> privileges = role.getPrivileges();
 
     // Then
-    assertThat(privileges).contains(Privilege.ACCESS_ADMIN_API);
+    assertThat(privileges).contains(Privilege.ACCESS_MANAGER_API);
     assertThat(privileges).doesNotContain(Privilege.ACCESS_USER_API);
   }
 }
