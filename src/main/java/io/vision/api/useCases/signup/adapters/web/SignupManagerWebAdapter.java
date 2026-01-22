@@ -29,7 +29,7 @@ public class SignupManagerWebAdapter {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "가입 성공")
   })
-  @PostMapping("/api/v1/signup/manager")
+  @PostMapping("/api/v1/manager/signup")
   public SignupRes signupManager(
       @RequestBody @Parameter(description = "관리자 가입 정보", required = true) SignupManagerReq req) {
     AuthToken token = signupUseCase.operate(

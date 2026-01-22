@@ -16,4 +16,6 @@ public interface JwtUseCase {
   String getDisplayName(String token);
 
   String getRole(String token);
+
+  java.util.List<String> getPrivileges(String token);
 }

@@ -97,6 +97,18 @@ public class JwtService implements JwtUseCase {
     }
   }
 
+  @Override
+  @SuppressWarnings("unchecked")
+  public java.util.List<String> getPrivileges(String token) {
+    try {
+      Claims claims = parseClaims(token);
+      return claims.get("privileges", java.util.List.class);
+    } catch (Exception e) {
+      log.error("Failed to extract privileges from token", e);
+      return java.util.Collections.emptyList();
+    }
+  }
+
   private Claims parseClaims(String token) {
     return Jwts.parser().verifyWith(key).build().parseSignedClaims(token).getPayload();
   }

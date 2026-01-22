@@ -16,15 +16,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 @WebMvcTest(controllers = SecurityConfigTest.TestController.class)
 @Import({
-  SecurityConfig.class,
-  JwtAuthenticationFilter.class,
-  SecurityConfigTest.TestController.class
+    SecurityConfig.class,
+    JwtAuthenticationFilter.class,
+    SecurityConfigTest.TestController.class
 })
 class SecurityConfigTest {
 
-  @Autowired private MockMvc mockMvc;
+  @Autowired
+  private MockMvc mockMvc;
 
-  @MockitoBean private JwtUseCase jwtUseCase;
+  @MockitoBean
+  private JwtUseCase jwtUseCase;
 
   @RestController
   static class TestController {
@@ -33,7 +35,7 @@ class SecurityConfigTest {
       return "ok";
     }
 
-    @GetMapping("/api/v1/users/test")
+    @GetMapping("/api/v1/user/test")
     public String protectedEndpoint() {
       return "ok";
     }
@@ -48,6 +50,6 @@ class SecurityConfigTest {
   @Test
   @DisplayName("Scenario: 실패 - 보호된 경로는 토큰 없이 접근 시 401/403 응답을 반환한다")
   void access_protected_endpoint_fail() throws Exception {
-    mockMvc.perform(get("/api/v1/users/test")).andExpect(status().isForbidden());
+    mockMvc.perform(get("/api/v1/user/test")).andExpect(status().isForbidden());
   }
 }

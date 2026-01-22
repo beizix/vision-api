@@ -21,7 +21,8 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 @WebMvcTest(SignupUserWebAdapter.class)
 class SignupUserWebAdapterTest extends WebMvcTestBase {
 
-  @MockitoBean private SignupUseCase signupUseCase;
+  @MockitoBean
+  private SignupUseCase signupUseCase;
 
   @Test
   @DisplayName("Scenario: 성공 - 사용자 회원가입 요청 시 토큰을 반환한다")
@@ -35,7 +36,7 @@ class SignupUserWebAdapterTest extends WebMvcTestBase {
     // When
     mockMvc
         .perform(
-            post("/api/v1/signup/user")
+            post("/api/v1/user/signup")
                 .with(csrf())
                 .content(json(req))
                 .contentType("application/json"))

@@ -6,7 +6,6 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
-import io.vision.api.common.application.enums.Role;
 import io.vision.api.useCases.auth.application.JwtUseCase;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -53,13 +52,13 @@ class JwtAuthenticationFilterTest {
     // Given
     String token = "valid-token";
     String email = "test@example.com";
-    String role = Role.MANAGER.getAuthority();
+    var privileges = java.util.List.of("ACCESS_MANAGER_API");
 
     request.addHeader("Authorization", "Bearer " + token);
 
     given(jwtUseCase.validateToken(token)).willReturn(true);
     given(jwtUseCase.getSubject(token)).willReturn(email);
-    given(jwtUseCase.getRole(token)).willReturn(role);
+    given(jwtUseCase.getPrivileges(token)).willReturn(privileges);
 
     // When
     filter.doFilterInternal(request, response, filterChain);
@@ -69,12 +68,12 @@ class JwtAuthenticationFilterTest {
     assertThat(authentication).isNotNull();
     assertThat(authentication.getName()).isEqualTo(email);
 
-    // 검증: JwtUseCase에서 반환된 역할이 실제로 적용되었는지 확인
+    // 검증: JwtUseCase에서 반환된 권한이 실제로 적용되었는지 확인
     assertThat(authentication.getAuthorities())
         .extracting(GrantedAuthority::getAuthority)
-        .containsExactlyInAnyOrder("ROLE_MANAGER");
+        .containsExactlyInAnyOrder("ACCESS_MANAGER_API");
 
-    verify(jwtUseCase).getRole(token);
+    verify(jwtUseCase).getPrivileges(token);
   }
 
   @Test
