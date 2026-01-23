@@ -43,10 +43,13 @@ public class UserEntity extends AuditEntity {
   @Enumerated(EnumType.STRING)
   private Role role;
 
-  public UserEntity(String email, String password, String displayName, Role role) {
+  private String refreshToken;
+
+  public UserEntity(String email, String password, String displayName, Role role, String refreshToken) {
     this.email = email;
     this.password = password;
     this.displayName = displayName;
     this.role = role;
+    this.refreshToken = refreshToken;
   }
 }

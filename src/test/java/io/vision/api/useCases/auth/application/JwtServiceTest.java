@@ -1,6 +1,10 @@
 package io.vision.api.useCases.auth.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -8,8 +12,10 @@ import io.jsonwebtoken.security.Keys;
 import io.vision.api.common.application.enums.Role;
 import io.vision.api.useCases.auth.application.model.CreateTokenCmd;
 import io.vision.api.useCases.auth.application.model.AuthToken;
+import io.vision.api.useCases.auth.application.model.RefreshTokenCmd;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Optional;
 import javax.crypto.SecretKey;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -18,6 +24,7 @@ import org.junit.jupiter.api.Test;
 class JwtServiceTest {
 
   private JwtService jwtService;
+  private JwtPortOut jwtPortOut;
   // 테스트용 키는 256비트(32자) 이상이어야 안전하게 HS256 알고리즘을 사용할 수 있습니다.
   private final String secret = "v-api-test-secret-key-must-be-long-enough-for-hs256";
   private final long accessValidity = 60000L; // 60초
@@ -26,8 +33,58 @@ class JwtServiceTest {
 
   @BeforeEach
   void setUp() {
-    jwtService = new JwtService(secret, accessValidity, refreshValidity);
+    jwtPortOut = mock(JwtPortOut.class);
+    jwtService = new JwtService(secret, accessValidity, refreshValidity, jwtPortOut);
     secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+  }
+
+  @Test
+  @DisplayName("Scenario: 성공 - 토큰 생성 시 DB에 Refresh Token을 저장한다")
+  void create_token_save_refresh_token() {
+    // Given
+    CreateTokenCmd cmd = new CreateTokenCmd("test@example.com", "Test User", Role.USER);
+
+    // When
+    AuthToken token = jwtService.createToken(cmd);
+
+    // Then
+    verify(jwtPortOut).saveRefreshToken("test@example.com", token.refreshToken());
+  }
+
+  @Test
+  @DisplayName("Scenario: 성공 - DB에 저장된 Refresh Token과 일치하면 토큰을 재발급한다")
+  void refresh_token_success() throws InterruptedException {
+    // Given
+    String email = "manager@example.com";
+    Role role = Role.MANAGER;
+    CreateTokenCmd createCmd = new CreateTokenCmd(email, "Manager User", role);
+    AuthToken originalToken = jwtService.createToken(createCmd);
+
+    when(jwtPortOut.findRefreshToken(originalToken.refreshToken()))
+        .thenReturn(Optional.of(new JwtPortOut.JwtUser(email, "Manager User", role)));
+
+    // Ensure tokens have different timestamps
+    Thread.sleep(1001);
+
+    // When
+    AuthToken refreshedToken = jwtService.refreshToken(new RefreshTokenCmd(originalToken.refreshToken()));
+
+    // Then
+    assertThat(refreshedToken.accessToken()).isNotEqualTo(originalToken.accessToken());
+    assertThat(jwtService.getRole(refreshedToken.accessToken())).isEqualTo("ROLE_MANAGER");
+  }
+
+  @Test
+  @DisplayName("Scenario: 실패 - DB에 저장되지 않은 Refresh Token이면 예외가 발생한다")
+  void refresh_token_fail_not_in_db() {
+    // Given
+    String token = "invalid-token";
+    when(jwtPortOut.findRefreshToken(anyString())).thenReturn(Optional.empty());
+
+    // When & Then
+    org.junit.jupiter.api.Assertions.assertThrows(IllegalArgumentException.class, () -> {
+      jwtService.refreshToken(new RefreshTokenCmd(token));
+    });
   }
 
   @Test

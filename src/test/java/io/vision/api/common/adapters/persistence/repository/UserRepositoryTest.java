@@ -23,7 +23,7 @@ class UserRepositoryTest extends DataJpaTestBase {
   @DisplayName("Scenario: 성공 - UserEntity 저장 시 Audit 정보가 자동 주입된다")
   void testAuditing_onSave() {
     // Given
-    var user = new UserEntity("test@email.com", "password", "Test User 1", Role.USER);
+    var user = new UserEntity("test@email.com", "password", "Test User 1", Role.USER, null);
 
     // When
     var savedUser = userRepository.save(user);
@@ -42,7 +42,7 @@ class UserRepositoryTest extends DataJpaTestBase {
   void testAuditing_onUpdate() throws InterruptedException {
     // Given
     var savedUser = userRepository.save(
-        new UserEntity("test2@email.com", "password", "Test User 2", Role.USER));
+        new UserEntity("test2@email.com", "password", "Test User 2", Role.USER, null));
     em.flush();
     em.clear();
 
@@ -66,7 +66,7 @@ class UserRepositoryTest extends DataJpaTestBase {
   void testSQLRestriction_onSoftDelete() {
     // Given
     var savedUser = userRepository.save(
-        new UserEntity("test3@email.com", "password", "Test User 3", Role.USER));
+        new UserEntity("test3@email.com", "password", "Test User 3", Role.USER, null));
     em.flush();
     em.clear();
 
@@ -81,5 +81,22 @@ class UserRepositoryTest extends DataJpaTestBase {
     // Then
     Optional<UserEntity> byId = userRepository.findById(savedUser.getId());
     assertThat(byId).isEmpty();
+  }
+
+  @Test
+  @DisplayName("Scenario: 성공 - refreshToken으로 User를 조회할 수 있다")
+  void testFindByRefreshToken() {
+    // Given
+    var user = new UserEntity("test4@email.com", "password", "Test User 4", Role.USER, "mock-refresh-token");
+    userRepository.save(user);
+    em.flush();
+    em.clear();
+
+    // When
+    var foundUser = userRepository.findByRefreshToken("mock-refresh-token");
+
+    // Then
+    assertThat(foundUser).isPresent();
+    assertThat(foundUser.get().getEmail()).isEqualTo("test4@email.com");
   }
 }

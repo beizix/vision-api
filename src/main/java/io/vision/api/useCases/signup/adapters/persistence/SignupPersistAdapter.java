@@ -22,7 +22,7 @@ public class SignupPersistAdapter implements SignupPortOut {
   @Override
   public void save(SignupUser user) {
     UserEntity entity =
-        new UserEntity(user.email(), user.password(), user.displayName(), user.role());
+        new UserEntity(user.email(), user.password(), user.displayName(), user.role(), null);
     userRepository.save(entity);
   }
 }

@@ -23,11 +23,11 @@ class LoginPersistAdapterTest extends DataJpaTestBase {
   private UserRepository userRepository;
 
   @Test
-  @DisplayName("Scenario: 성공 - 이메일로 사용자를 조회하여 LoginUser 모델로 반환한다")
+  @DisplayName("Scenario: 성공 - 이메일로 사용자 정보를 로드한다")
   void load_user_success() {
     // Given
-    String email = "persist@test.com";
-    userRepository.save(new UserEntity(email, "password", "Persist User", Role.USER));
+    String email = "persist@example.com";
+    userRepository.save(new UserEntity(email, "password", "Persist User", Role.USER, null));
 
     // When
     Optional<LoginUser> result = loginPersistAdapter.loadUser(email);
