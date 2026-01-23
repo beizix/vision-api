@@ -4,7 +4,7 @@ import io.vision.api.useCases.auth.application.model.CreateTokenCmd;
 import io.vision.api.useCases.auth.application.model.AuthToken;
 import io.vision.api.useCases.auth.application.model.RefreshTokenCmd;
 
-public interface JwtUseCase {
+public interface AuthTokenUseCase {
   AuthToken createToken(CreateTokenCmd cmd);
 
   boolean validateToken(String token);

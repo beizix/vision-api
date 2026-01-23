@@ -23,8 +23,8 @@ import org.junit.jupiter.api.Test;
 
 class JwtServiceTest {
 
-  private JwtService jwtService;
-  private JwtPortOut jwtPortOut;
+  private AuthTokenService jwtService;
+  private RefreshTokenPortOut refreshTokenPortOut;
   // 테스트용 키는 256비트(32자) 이상이어야 안전하게 HS256 알고리즘을 사용할 수 있습니다.
   private final String secret = "v-api-test-secret-key-must-be-long-enough-for-hs256";
   private final long accessValidity = 60000L; // 60초
@@ -33,8 +33,8 @@ class JwtServiceTest {
 
   @BeforeEach
   void setUp() {
-    jwtPortOut = mock(JwtPortOut.class);
-    jwtService = new JwtService(secret, accessValidity, refreshValidity, jwtPortOut);
+    refreshTokenPortOut = mock(RefreshTokenPortOut.class);
+    jwtService = new AuthTokenService(secret, accessValidity, refreshValidity, refreshTokenPortOut);
     secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
   }
 
@@ -48,7 +48,7 @@ class JwtServiceTest {
     AuthToken token = jwtService.createToken(cmd);
 
     // Then
-    verify(jwtPortOut).saveRefreshToken("test@example.com", token.refreshToken());
+    verify(refreshTokenPortOut).save("test@example.com", token.refreshToken());
   }
 
   @Test
@@ -60,8 +60,8 @@ class JwtServiceTest {
     CreateTokenCmd createCmd = new CreateTokenCmd(email, "Manager User", role);
     AuthToken originalToken = jwtService.createToken(createCmd);
 
-    when(jwtPortOut.findRefreshToken(originalToken.refreshToken()))
-        .thenReturn(Optional.of(new JwtPortOut.JwtUser(email, "Manager User", role)));
+    when(refreshTokenPortOut.get(originalToken.refreshToken()))
+        .thenReturn(Optional.of(new RefreshTokenPortOut.RefreshUser(email, "Manager User", role)));
 
     // Ensure tokens have different timestamps
     Thread.sleep(1001);
@@ -79,7 +79,7 @@ class JwtServiceTest {
   void refresh_token_fail_not_in_db() {
     // Given
     String token = "invalid-token";
-    when(jwtPortOut.findRefreshToken(anyString())).thenReturn(Optional.empty());
+    when(refreshTokenPortOut.get(anyString())).thenReturn(Optional.empty());
 
     // When & Then
     org.junit.jupiter.api.Assertions.assertThrows(IllegalArgumentException.class, () -> {

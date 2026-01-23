@@ -6,7 +6,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 import io.vision.api.common.application.enums.Role;
-import io.vision.api.useCases.auth.application.JwtUseCase;
+import io.vision.api.useCases.auth.application.AuthTokenUseCase;
 import io.vision.api.useCases.auth.application.model.CreateTokenCmd;
 import io.vision.api.useCases.auth.application.model.AuthToken;
 import io.vision.api.useCases.login.application.model.LoginCmd;
@@ -34,7 +34,7 @@ class LoginUseCaseTest {
   private PasswordEncoder passwordEncoder;
 
   @Mock
-  private JwtUseCase jwtUseCase;
+  private AuthTokenUseCase authTokenUseCase;
 
   @Test
   @DisplayName("Scenario: 성공 - 유효한 자격 증명으로 로그인 성공")
@@ -48,7 +48,7 @@ class LoginUseCaseTest {
 
     given(loginPortOut.loadUser(email)).willReturn(Optional.of(user));
     given(passwordEncoder.matches(password, encodedPassword)).willReturn(true);
-    given(jwtUseCase.createToken(any(CreateTokenCmd.class)))
+    given(authTokenUseCase.createToken(any(CreateTokenCmd.class)))
         .willReturn(new AuthToken("access", "refresh"));
 
     // When
@@ -56,6 +56,6 @@ class LoginUseCaseTest {
 
     // Then
     assertThat(token).isNotNull();
-    verify(jwtUseCase).createToken(any(CreateTokenCmd.class));
+    verify(authTokenUseCase).createToken(any(CreateTokenCmd.class));
   }
 }

@@ -1,7 +1,7 @@
 package io.vision.api.useCases.auth.adapters.persistence;
 
 import io.vision.api.common.adapters.persistence.repository.UserRepository;
-import io.vision.api.useCases.auth.application.JwtPortOut;
+import io.vision.api.useCases.auth.application.RefreshTokenPortOut;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -9,20 +9,20 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @RequiredArgsConstructor
-public class JwtPersistAdapter implements JwtPortOut {
+public class RefreshTokenPersistAdapter implements RefreshTokenPortOut {
 
   private final UserRepository userRepository;
 
   @Override
   @Transactional(readOnly = true)
-  public Optional<JwtUser> findRefreshToken(String refreshToken) {
+  public Optional<RefreshUser> get(String refreshToken) {
     return userRepository.findByRefreshToken(refreshToken)
-        .map(entity -> new JwtUser(entity.getEmail(), entity.getDisplayName(), entity.getRole()));
+        .map(entity -> new RefreshUser(entity.getEmail(), entity.getDisplayName(), entity.getRole()));
   }
 
   @Override
   @Transactional
-  public void saveRefreshToken(String email, String refreshToken) {
+  public void save(String email, String refreshToken) {
     userRepository.findByEmail(email)
         .ifPresent(entity -> {
           // UserEntity에 setter가 있으므로 이를 활용합니다.

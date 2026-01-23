@@ -8,7 +8,7 @@ import io.vision.api.useCases.auth.adapters.web.model.RefreshReq;
 import io.vision.api.useCases.auth.adapters.web.model.RefreshRes;
 import io.vision.api.useCases.auth.adapters.web.model.ValidateReq;
 import io.vision.api.useCases.auth.adapters.web.model.ValidateRes;
-import io.vision.api.useCases.auth.application.JwtUseCase;
+import io.vision.api.useCases.auth.application.AuthTokenUseCase;
 import io.vision.api.useCases.auth.application.model.AuthToken;
 import io.vision.api.useCases.auth.application.model.RefreshTokenCmd;
 import lombok.RequiredArgsConstructor;
@@ -23,14 +23,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthWebAdapter {
 
-  private final JwtUseCase jwtUseCase;
+  private final AuthTokenUseCase authTokenUseCase;
 
   @Operation(summary = "토큰 갱신", description = "리프레시 토큰을 사용하여 액세스 토큰을 갱신합니다.")
   @ApiResponse(responseCode = "200", description = "토큰 갱신 성공")
   @PostMapping("/refresh")
   public RefreshRes refresh(
       @RequestBody @Parameter(description = "토큰 갱신 요청", required = true) RefreshReq req) {
-    AuthToken token = jwtUseCase.refreshToken(new RefreshTokenCmd(req.refreshToken()));
+    AuthToken token = authTokenUseCase.refreshToken(new RefreshTokenCmd(req.refreshToken()));
     return new RefreshRes(token.accessToken(), token.refreshToken());
   }
 
@@ -39,7 +39,7 @@ public class AuthWebAdapter {
   @PostMapping("/validate")
   public ValidateRes validate(
       @RequestBody @Parameter(description = "토큰 검증 요청", required = true) ValidateReq req) {
-    boolean isValid = jwtUseCase.validateToken(req.token());
+    boolean isValid = authTokenUseCase.validateToken(req.token());
     return new ValidateRes(isValid);
   }
 }

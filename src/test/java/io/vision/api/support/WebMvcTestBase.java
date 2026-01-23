@@ -1,6 +1,6 @@
 package io.vision.api.support;
 
-import io.vision.api.useCases.auth.application.JwtUseCase;
+import io.vision.api.useCases.auth.application.AuthTokenUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
@@ -14,7 +14,7 @@ public abstract class WebMvcTestBase {
 
   @Autowired protected ObjectMapper objectMapper;
 
-  @MockitoBean protected JwtUseCase jwtUseCase;
+  @MockitoBean protected AuthTokenUseCase authTokenUseCase;
 
   protected String json(Object obj) throws Exception {
     return objectMapper.writeValueAsString(obj);

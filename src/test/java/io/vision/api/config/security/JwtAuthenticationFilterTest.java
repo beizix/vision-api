@@ -6,7 +6,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
-import io.vision.api.useCases.auth.application.JwtUseCase;
+import io.vision.api.useCases.auth.application.AuthTokenUseCase;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -26,7 +26,7 @@ class JwtAuthenticationFilterTest {
   private JwtAuthenticationFilter filter;
 
   @Mock
-  private JwtUseCase jwtUseCase;
+  private AuthTokenUseCase authTokenUseCase;
 
   private MockHttpServletRequest request;
   private MockHttpServletResponse response;
@@ -34,7 +34,7 @@ class JwtAuthenticationFilterTest {
 
   @BeforeEach
   void setUp() {
-    filter = new JwtAuthenticationFilter(jwtUseCase);
+    filter = new JwtAuthenticationFilter(authTokenUseCase);
     request = new MockHttpServletRequest();
     response = new MockHttpServletResponse();
     filterChain = new MockFilterChain();
@@ -57,10 +57,10 @@ class JwtAuthenticationFilterTest {
 
     request.addHeader("Authorization", "Bearer " + token);
 
-    given(jwtUseCase.validateToken(token)).willReturn(true);
-    given(jwtUseCase.getSubject(token)).willReturn(email);
-    given(jwtUseCase.getRole(token)).willReturn(role);
-    given(jwtUseCase.getPrivileges(token)).willReturn(privileges);
+    given(authTokenUseCase.validateToken(token)).willReturn(true);
+    given(authTokenUseCase.getSubject(token)).willReturn(email);
+    given(authTokenUseCase.getRole(token)).willReturn(role);
+    given(authTokenUseCase.getPrivileges(token)).willReturn(privileges);
 
     // When
     filter.doFilterInternal(request, response, filterChain);
@@ -75,8 +75,8 @@ class JwtAuthenticationFilterTest {
         .extracting(GrantedAuthority::getAuthority)
         .containsExactlyInAnyOrder("ROLE_USER", "ACCESS_MANAGER_API");
 
-    verify(jwtUseCase).getRole(token);
-    verify(jwtUseCase).getPrivileges(token);
+    verify(authTokenUseCase).getRole(token);
+    verify(authTokenUseCase).getPrivileges(token);
   }
 
   @Test
@@ -88,6 +88,6 @@ class JwtAuthenticationFilterTest {
     // Then
     var authentication = SecurityContextHolder.getContext().getAuthentication();
     assertThat(authentication).isNull();
-    verify(jwtUseCase, never()).validateToken(any());
+    verify(authTokenUseCase, never()).validateToken(any());
   }
 }

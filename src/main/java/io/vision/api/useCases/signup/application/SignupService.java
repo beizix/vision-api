@@ -1,6 +1,6 @@
 package io.vision.api.useCases.signup.application;
 
-import io.vision.api.useCases.auth.application.JwtUseCase;
+import io.vision.api.useCases.auth.application.AuthTokenUseCase;
 import io.vision.api.useCases.auth.application.model.CreateTokenCmd;
 import io.vision.api.useCases.auth.application.model.AuthToken;
 import io.vision.api.useCases.signup.application.model.SignupCmd;
@@ -16,7 +16,7 @@ public class SignupService implements SignupUseCase {
 
   private final SignupPortOut signupPortOut;
   private final PasswordEncoder passwordEncoder;
-  private final JwtUseCase jwtUseCase;
+  private final AuthTokenUseCase authTokenUseCase;
 
   @Override
   @Transactional
@@ -30,7 +30,7 @@ public class SignupService implements SignupUseCase {
 
     signupPortOut.save(user);
 
-    return jwtUseCase.createToken(
+    return authTokenUseCase.createToken(
         new CreateTokenCmd(user.email(), user.displayName(), user.role()));
   }
 }

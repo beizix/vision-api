@@ -8,7 +8,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 import io.vision.api.common.application.enums.Role;
-import io.vision.api.useCases.auth.application.JwtUseCase;
+import io.vision.api.useCases.auth.application.AuthTokenUseCase;
 import io.vision.api.useCases.auth.application.model.CreateTokenCmd;
 import io.vision.api.useCases.auth.application.model.AuthToken;
 import io.vision.api.useCases.signup.application.model.SignupCmd;
@@ -33,7 +33,7 @@ class SignupServiceTest {
         private PasswordEncoder passwordEncoder;
 
         @Mock
-        private JwtUseCase jwtUseCase;
+        private AuthTokenUseCase authTokenUseCase;
 
         @Test
         @DisplayName("Scenario: 성공 - 정상적인 회원가입 요청 시 사용자를 저장하고 토큰을 발급한다")
@@ -43,7 +43,7 @@ class SignupServiceTest {
 
                 given(signupPortOut.existsByEmailAndRole(cmd.email(), cmd.role())).willReturn(false);
                 given(passwordEncoder.encode(cmd.password())).willReturn("encodedPassword");
-                given(jwtUseCase.createToken(any(CreateTokenCmd.class)))
+                given(authTokenUseCase.createToken(any(CreateTokenCmd.class)))
                                 .willReturn(new AuthToken("access", "refresh"));
 
                 // When
@@ -63,7 +63,7 @@ class SignupServiceTest {
                                                                                                 cmd.displayName())
                                                                                 && user.role().equals(cmd.role())));
 
-                verify(jwtUseCase)
+                verify(authTokenUseCase)
                                 .createToken(
                                                 argThat(
                                                                 authCmd -> authCmd.email().equals(cmd.email())
