@@ -21,9 +21,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-class JwtServiceTest {
+class AuthTokenServiceTest {
 
-  private AuthTokenService jwtService;
+  private AuthTokenService authTokenService;
   private RefreshTokenPortOut refreshTokenPortOut;
   // 테스트용 키는 256비트(32자) 이상이어야 안전하게 HS256 알고리즘을 사용할 수 있습니다.
   private final String secret = "v-api-test-secret-key-must-be-long-enough-for-hs256";
@@ -34,7 +34,7 @@ class JwtServiceTest {
   @BeforeEach
   void setUp() {
     refreshTokenPortOut = mock(RefreshTokenPortOut.class);
-    jwtService = new AuthTokenService(secret, accessValidity, refreshValidity, refreshTokenPortOut);
+    authTokenService = new AuthTokenService(secret, accessValidity, refreshValidity, refreshTokenPortOut);
     secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
   }
 
@@ -45,7 +45,7 @@ class JwtServiceTest {
     CreateTokenCmd cmd = new CreateTokenCmd("test@example.com", "Test User", Role.USER);
 
     // When
-    AuthToken token = jwtService.createToken(cmd);
+    AuthToken token = authTokenService.createToken(cmd);
 
     // Then
     verify(refreshTokenPortOut).save("test@example.com", token.refreshToken());
@@ -58,7 +58,7 @@ class JwtServiceTest {
     String email = "manager@example.com";
     Role role = Role.MANAGER;
     CreateTokenCmd createCmd = new CreateTokenCmd(email, "Manager User", role);
-    AuthToken originalToken = jwtService.createToken(createCmd);
+    AuthToken originalToken = authTokenService.createToken(createCmd);
 
     when(refreshTokenPortOut.get(originalToken.refreshToken()))
         .thenReturn(Optional.of(new RefreshTokenPortOut.RefreshUser(email, "Manager User", role)));
@@ -67,11 +67,11 @@ class JwtServiceTest {
     Thread.sleep(1001);
 
     // When
-    AuthToken refreshedToken = jwtService.refreshToken(new RefreshTokenCmd(originalToken.refreshToken()));
+    AuthToken refreshedToken = authTokenService.refreshToken(new RefreshTokenCmd(originalToken.refreshToken()));
 
     // Then
     assertThat(refreshedToken.accessToken()).isNotEqualTo(originalToken.accessToken());
-    assertThat(jwtService.getRole(refreshedToken.accessToken())).isEqualTo("ROLE_MANAGER");
+    assertThat(authTokenService.getRole(refreshedToken.accessToken())).isEqualTo("ROLE_MANAGER");
   }
 
   @Test
@@ -83,7 +83,7 @@ class JwtServiceTest {
 
     // When & Then
     org.junit.jupiter.api.Assertions.assertThrows(IllegalArgumentException.class, () -> {
-      jwtService.refreshToken(new RefreshTokenCmd(token));
+      authTokenService.refreshToken(new RefreshTokenCmd(token));
     });
   }
 
@@ -92,11 +92,11 @@ class JwtServiceTest {
   void validate_token_success() {
     // Given
     CreateTokenCmd cmd = new CreateTokenCmd("test@example.com", "Test User", Role.USER);
-    AuthToken token = jwtService.createToken(cmd);
+    AuthToken token = authTokenService.createToken(cmd);
     String accessToken = token.accessToken();
 
     // When
-    boolean isValid = jwtService.validateToken(accessToken);
+    boolean isValid = authTokenService.validateToken(accessToken);
 
     // Then
     assertThat(isValid).isTrue();
@@ -109,7 +109,7 @@ class JwtServiceTest {
     String invalidToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0In0.invalid_signature";
 
     // When
-    boolean isValid = jwtService.validateToken(invalidToken);
+    boolean isValid = authTokenService.validateToken(invalidToken);
 
     // Then
     assertThat(isValid).isFalse();
@@ -121,10 +121,10 @@ class JwtServiceTest {
     // Given
     String email = "user@example.com";
     CreateTokenCmd cmd = new CreateTokenCmd(email, "User", Role.USER);
-    AuthToken token = jwtService.createToken(cmd);
+    AuthToken token = authTokenService.createToken(cmd);
 
     // When
-    String subject = jwtService.getSubject(token.accessToken());
+    String subject = authTokenService.getSubject(token.accessToken());
 
     // Then
     assertThat(subject).isEqualTo(email);
@@ -139,7 +139,7 @@ class JwtServiceTest {
     CreateTokenCmd cmd = new CreateTokenCmd(email, "Manager User", role);
 
     // When
-    AuthToken authToken = jwtService.createToken(cmd);
+    AuthToken authToken = authTokenService.createToken(cmd);
 
     // Then
     String accessToken = authToken.accessToken();
@@ -162,10 +162,10 @@ class JwtServiceTest {
     String email = "user@example.com";
     String displayName = "Super User";
     CreateTokenCmd cmd = new CreateTokenCmd(email, displayName, Role.USER);
-    AuthToken token = jwtService.createToken(cmd);
+    AuthToken token = authTokenService.createToken(cmd);
 
     // When
-    String extractedDisplayName = jwtService.getDisplayName(token.accessToken());
+    String extractedDisplayName = authTokenService.getDisplayName(token.accessToken());
 
     // Then
     assertThat(extractedDisplayName).isEqualTo(displayName);
@@ -180,7 +180,7 @@ class JwtServiceTest {
     CreateTokenCmd cmd = new CreateTokenCmd(email, "Manager User", role);
 
     // When
-    AuthToken authToken = jwtService.createToken(cmd);
+    AuthToken authToken = authTokenService.createToken(cmd);
 
     // Then
     String accessToken = authToken.accessToken();
