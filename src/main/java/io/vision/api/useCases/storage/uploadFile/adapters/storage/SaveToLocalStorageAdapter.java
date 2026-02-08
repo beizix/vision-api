@@ -2,7 +2,6 @@ package io.vision.api.useCases.storage.uploadFile.adapters.storage;
 
 import io.vision.api.useCases.storage.uploadFile.application.SaveToFileStoragePortOut;
 import io.vision.api.useCases.storage.uploadFile.application.model.FileStorageType;
-import jakarta.annotation.PostConstruct;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -21,22 +20,6 @@ public class SaveToLocalStorageAdapter implements SaveToFileStoragePortOut {
 
   @Value("${app.upload.path}")
   private String publicPath;
-
-  @Value("${app.upload.tmpDir}")
-  private String tmpPath;
-
-  @PostConstruct
-  public void initialize() throws Exception {
-    log.info("SaveToFileStorageAdapter - initialize : app.upload.path is {}", publicPath);
-    log.info("SaveToFileStorageAdapter - initialize : app.upload.tmpDir is {}", tmpPath);
-
-    try {
-      Files.createDirectories(Paths.get(publicPath));
-      Files.createDirectories(Paths.get(tmpPath));
-    } catch (IOException e) {
-      throw new IOException("Could not initialize storage", e);
-    }
-  }
 
   @Override
   public FileStorageType getStorageType() {

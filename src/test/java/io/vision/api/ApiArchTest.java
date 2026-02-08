@@ -27,7 +27,7 @@ public class ApiArchTest {
           .definedBy("..application..")
           // `(외부) 아웃바운드 어뎁터` 계층 정의
           .layer("outboundAdapters")
-          .definedBy("..adapters.persistence..", "..adapters.ai..")
+          .definedBy("..adapters.persistence..", "..adapters.ai..", "..adapters.storage..")
           // `(설정) 구성 요소` 계층 정의
           .layer("config")
           .definedBy("..config..");
