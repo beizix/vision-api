@@ -19,7 +19,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@SQLRestriction(value = "is_deleted = false")
+@SQLRestriction(value = "deleted = false")
 public class FileMetadataEntity extends AuditEntity {
   @Id
   @Column(nullable = false, length = 36, comment = "파일 UUID")

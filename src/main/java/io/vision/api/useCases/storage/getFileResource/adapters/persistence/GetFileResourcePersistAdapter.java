@@ -4,6 +4,7 @@ import io.vision.api.common.adapters.persistence.entity.FileMetadataEntity;
 import io.vision.api.common.adapters.persistence.repository.FileMetadataRepository;
 import io.vision.api.useCases.storage.getFileResource.application.GetFileResourcePortOut;
 import io.vision.api.useCases.storage.getFileResource.application.model.GetFileResource;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +14,7 @@ public class GetFileResourcePersistAdapter implements GetFileResourcePortOut {
   private final FileMetadataRepository fileMetadataRepository;
 
   @Override
-  public GetFileResource operate(String fileUuid) {
+  public GetFileResource operate(UUID fileUuid) {
     FileMetadataEntity metadata = fileMetadataRepository.findById(fileUuid).orElseThrow();
     return new GetFileResource(metadata.getPath(), metadata.getName());
   }

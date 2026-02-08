@@ -1,5 +1,6 @@
 package io.vision.api.useCases.storage.getFileResource.application;
 
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -7,7 +8,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class GetFileResourceService implements GetFileResourceUseCase {
   @Override
-  public String operate(String fileUuid) {
+  public String operate(UUID fileUuid) {
     return "";
   }
 }
