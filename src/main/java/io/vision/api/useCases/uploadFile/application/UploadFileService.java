@@ -16,10 +16,11 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 public class UploadFileService implements UploadFileUseCase {
   private final Set<SaveToFileStoragePortOut> fileUploadStrategies;
+  private final SaveFileMetadataPortOut saveFileMetadataPortOut;
   private final Tika tika;
 
   @Override
-  public Optional<SaveToFileStorage> operate(FileUploadType fileUploadType, MultipartFile multipartFile) {
+  public Optional<UploadFile> operate(FileUploadType fileUploadType, MultipartFile multipartFile) {
     if (multipartFile == null || multipartFile.isEmpty()) {
       return Optional.empty();
     }
@@ -34,22 +35,33 @@ public class UploadFileService implements UploadFileUseCase {
     String subPath = getDirPath(fileUploadType.getSubPath());
     String createFilename = getUUIDFilename(getFileExtension(originalFilename).orElse(null));
 
-    try {
+    try (InputStream inputStream = multipartFile.getInputStream()) {
       getFileUploadStrategy(fileUploadType.getFileStorageType())
-          .operate(multipartFile, subPath, createFilename);
+          .operate(inputStream, subPath, createFilename);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
 
-    return Optional.of(
-        new SaveToFileStorage(
-            fileUploadType, subPath, createFilename, originalFilename, multipartFile.getSize()));
-  }
+    SaveFileMetadata saveFileMetadata =
+        saveFileMetadataPortOut
+            .operate(
+                new SaveFileMetadataCmd(
+                    fileUploadType,
+                    subPath,
+                    createFilename,
+                    multipartFile.getOriginalFilename(),
+                    multipartFile.getSize()))
+            .orElseThrow();
 
-  @Override
-  public Optional<SaveToFileStorage> operate(FileUploadType fileUploadType, String base64DataStr) {
-    MultipartFile multipartFile = new Base64MultipartFile(base64DataStr);
-    return operate(fileUploadType, multipartFile);
+    return Optional.of(
+        new UploadFile(
+            saveFileMetadata.id(),
+            fileUploadType,
+            subPath,
+            createFilename,
+            originalFilename,
+            multipartFile.getSize(),
+            null));
   }
 
   private void validateFile(FileUploadType fileUploadType, MultipartFile multipartFile)

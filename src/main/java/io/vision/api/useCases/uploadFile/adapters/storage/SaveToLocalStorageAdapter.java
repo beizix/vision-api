@@ -13,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
 
 @Component
 @RequiredArgsConstructor
@@ -45,7 +44,7 @@ public class SaveToLocalStorageAdapter implements SaveToFileStoragePortOut {
   }
 
   @Override
-  public void operate(MultipartFile multipartFile, String createSubPath, String createFilename)
+  public void operate(InputStream inputStream, String createSubPath, String createFilename)
       throws IOException {
 
     Path filePath = Paths.get(publicPath, createSubPath);
@@ -59,10 +58,8 @@ public class SaveToLocalStorageAdapter implements SaveToFileStoragePortOut {
       throw new RuntimeException("Cannot store file outside current directory.");
     }
 
-    try (InputStream inputStream = multipartFile.getInputStream()) {
-      Files.copy(inputStream, destinationFile, StandardCopyOption.REPLACE_EXISTING);
-      destinationFile.toFile().setWritable(true, false);
-      destinationFile.toFile().setReadable(true, false);
-    }
+    Files.copy(inputStream, destinationFile, StandardCopyOption.REPLACE_EXISTING);
+    destinationFile.toFile().setWritable(true, false);
+    destinationFile.toFile().setReadable(true, false);
   }
 }

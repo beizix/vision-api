@@ -18,7 +18,7 @@ import lombok.Setter;
 import org.hibernate.annotations.SQLRestriction;
 
 @Entity
-@Table(name = "users")
+@Table(name = "users", comment = "사용자 테이블")
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -27,22 +27,23 @@ public class UserEntity extends AuditEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
-  @Column(columnDefinition = "UUID")
+  @Column(comment = "사용자 UUID")
   private UUID id;
 
-  @Column(unique = true, nullable = false)
+  @Column(unique = true, nullable = false, comment = "사용자 이메일")
   private String email;
 
-  @Column(nullable = false)
+  @Column(nullable = false, comment = "사용자 패스워드")
   private String password;
 
-  @Column(nullable = false)
+  @Column(nullable = false, comment = "사용자 표기명")
   private String displayName;
 
-  @Column(nullable = false, columnDefinition = "VARCHAR(255)")
+  @Column(nullable = false, length = 255, comment = "사용자 역할")
   @Enumerated(EnumType.STRING)
   private Role role;
 
+  @Column(comment = "사용자 refresh 토큰")
   private String refreshToken;
 
   public UserEntity(String email, String password, String displayName, Role role, String refreshToken) {
