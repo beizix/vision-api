@@ -1,6 +1,7 @@
-package io.vision.api.useCases.uploadFile.application;
+package io.vision.api.useCases.storage.uploadFile.application;
 
-import io.vision.api.useCases.uploadFile.application.model.*;
+import io.vision.api.useCases.storage.uploadFile.application.model.*;
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
@@ -10,7 +11,6 @@ import java.util.*;
 import lombok.RequiredArgsConstructor;
 import org.apache.tika.Tika;
 import org.springframework.stereotype.Service;
-import java.io.BufferedInputStream;
 
 @Service
 @RequiredArgsConstructor
@@ -20,8 +20,8 @@ public class UploadFileService implements UploadFileUseCase {
   private final Tika tika;
 
   /**
-   * Tika를 이용한 파일 타입 감지(detect)는 파일의 앞부분(Magic Bytes)만 읽으므로,
-   * 유효성 검사 후 스트림을 초기화(reset)하기 위한 마킹 한계치를 64KB로 설정함.
+   * Tika를 이용한 파일 타입 감지(detect)는 파일의 앞부분(Magic Bytes)만 읽으므로, 유효성 검사 후 스트림을 초기화(reset)하기 위한 마킹 한계치를
+   * 64KB로 설정함.
    */
   private static final int MARK_READ_LIMIT = 64 * 1024;
 
@@ -60,8 +60,7 @@ public class UploadFileService implements UploadFileUseCase {
               subPath,
               createFilename,
               originalFilename,
-              fileSize,
-              null));
+              fileSize));
     } catch (IOException e) {
       throw new RuntimeException(e);
     }

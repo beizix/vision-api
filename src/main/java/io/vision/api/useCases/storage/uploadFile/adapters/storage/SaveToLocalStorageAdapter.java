@@ -1,7 +1,7 @@
-package io.vision.api.useCases.uploadFile.adapters.storage;
+package io.vision.api.useCases.storage.uploadFile.adapters.storage;
 
-import io.vision.api.useCases.uploadFile.application.SaveToFileStoragePortOut;
-import io.vision.api.useCases.uploadFile.application.model.FileStorageType;
+import io.vision.api.useCases.storage.uploadFile.application.SaveToFileStoragePortOut;
+import io.vision.api.useCases.storage.uploadFile.application.model.FileStorageType;
 import jakarta.annotation.PostConstruct;
 import java.io.IOException;
 import java.io.InputStream;

@@ -1,6 +1,6 @@
-package io.vision.api.useCases.uploadFile.adapters.web.model;
+package io.vision.api.useCases.storage.uploadFile.adapters.web.model;
 
-import io.vision.api.useCases.uploadFile.application.model.FileUploadType;
+import io.vision.api.useCases.storage.uploadFile.application.model.FileUploadType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 

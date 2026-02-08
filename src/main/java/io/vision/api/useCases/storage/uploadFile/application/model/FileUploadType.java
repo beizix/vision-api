@@ -1,4 +1,4 @@
-package io.vision.api.useCases.uploadFile.application.model;
+package io.vision.api.useCases.storage.uploadFile.application.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.util.Set;

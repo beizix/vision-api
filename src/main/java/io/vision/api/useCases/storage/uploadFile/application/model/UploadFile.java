@@ -1,4 +1,4 @@
-package io.vision.api.useCases.uploadFile.application.model;
+package io.vision.api.useCases.storage.uploadFile.application.model;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -18,5 +18,4 @@ public class UploadFile {
   private String name;
   private String originName;
   private Long fileLength;
-  private String referURL;
 }

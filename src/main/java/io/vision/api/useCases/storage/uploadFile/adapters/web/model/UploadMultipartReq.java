@@ -1,7 +1,7 @@
-package io.vision.api.useCases.uploadFile.adapters.web.model;
+package io.vision.api.useCases.storage.uploadFile.adapters.web.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.vision.api.useCases.uploadFile.application.model.FileUploadType;
+import io.vision.api.useCases.storage.uploadFile.application.model.FileUploadType;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.web.multipart.MultipartFile;
 

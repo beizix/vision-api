@@ -1,10 +1,10 @@
-package io.vision.api.useCases.uploadFile.adapters.persistence;
+package io.vision.api.useCases.storage.uploadFile.adapters.persistence;
 
 import io.vision.api.common.adapters.persistence.entity.FileMetadataEntity;
 import io.vision.api.common.adapters.persistence.repository.FileMetadataRepository;
-import io.vision.api.useCases.uploadFile.application.SaveFileMetadataPortOut;
-import io.vision.api.useCases.uploadFile.application.model.SaveFileMetadata;
-import io.vision.api.useCases.uploadFile.application.model.SaveFileMetadataCmd;
+import io.vision.api.useCases.storage.uploadFile.application.SaveFileMetadataPortOut;
+import io.vision.api.useCases.storage.uploadFile.application.model.SaveFileMetadata;
+import io.vision.api.useCases.storage.uploadFile.application.model.SaveFileMetadataCmd;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;

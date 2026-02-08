@@ -1,6 +1,6 @@
-package io.vision.api.useCases.uploadFile.application;
+package io.vision.api.useCases.storage.uploadFile.application;
 
-import io.vision.api.useCases.uploadFile.application.model.FileStorageType;
+import io.vision.api.useCases.storage.uploadFile.application.model.FileStorageType;
 import java.io.IOException;
 import java.io.InputStream;
 
