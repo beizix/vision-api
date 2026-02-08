@@ -1,4 +1,4 @@
-package io.vision.api.useCases.uploadFile.application.model;
+package io.vision.api.useCases.uploadFile.adapters.web.model;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
