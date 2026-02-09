@@ -31,13 +31,12 @@ public class SaveToS3StorageAdapter implements SaveToFileStoragePortOut {
   public void operate(InputStream inputStream, String createSubPath, String createFilename)
       throws IOException {
 
-    // Path.of와 normalize를 사용하여 중복 슬래시 방지 및 경로 정규화
-    // URL이므로 윈도우 스타일 역슬래시(\)를 슬래시(/)로 변환
-    String combinedPath =
-        Paths.get(createSubPath, createFilename).normalize().toString().replace("\\", "/");
-
     String path =
-        UriComponentsBuilder.fromPath(bucketFolder).path("/" + combinedPath).build().toUriString();
+        UriComponentsBuilder.fromPath(bucketFolder)
+            .path("/" + createSubPath)
+            .path("/" + createFilename)
+            .build()
+            .toUriString();
 
     s3Template.upload(bucketName, path, inputStream);
   }

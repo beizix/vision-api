@@ -24,14 +24,11 @@ public class GetS3ResourceURLAdapter implements GetResourceURLPortOut {
 
   @Override
   public String operate(String path, String filename) {
-    // Path.of와 normalize를 사용하여 중복 슬래시 방지 및 경로 정규화
-    // URL이므로 윈도우 스타일 역슬래시(\)를 슬래시(/)로 변환
-    String combinedPath = Paths.get(path, filename).normalize().toString().replace("\\", "/");
-
     return UriComponentsBuilder.fromPath("https://")
         .path("/" + cloudFrontDomain)
         .path("/" + bucketFolder)
-        .path("/" + combinedPath)
+        .path("/" + path)
+        .path("/" + filename)
         .build()
         .toUriString();
   }

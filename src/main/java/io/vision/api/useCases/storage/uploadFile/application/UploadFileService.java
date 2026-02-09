@@ -113,7 +113,7 @@ public class UploadFileService implements UploadFileUseCase {
   private String getDirPath(String path) {
     LocalDate now = LocalDate.now();
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMM");
-    return Path.of(path, now.format(formatter)).normalize().toString();
+    return Path.of(path, now.format(formatter)).normalize().toString().replace("\\", "/");
   }
 
   private String getUUIDFilename(String extension) {
