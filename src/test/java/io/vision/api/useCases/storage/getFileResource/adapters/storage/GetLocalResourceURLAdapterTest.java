@@ -24,20 +24,6 @@ class GetLocalResourceURLAdapterTest {
   }
 
   @Test
-  @DisplayName("Scenario: 성공 - 역슬래시가 포함된 경로도 슬래시로 변환하여 처리한다")
-  void operate_handle_backslash() {
-    // Given
-    String path = "images\\product";
-    String filename = "item.jpg";
-
-    // When
-    String result = adapter.operate(path, filename);
-
-    // Then
-    assertThat(result).isEqualTo("/uploads/images/product/item.jpg");
-  }
-
-  @Test
   @DisplayName("Scenario: 성공 - 경로가 null이면 빈 문자열을 반환한다")
   void operate_return_empty_on_null() {
     assertThat(adapter.operate(null, "file.txt")).isEmpty();

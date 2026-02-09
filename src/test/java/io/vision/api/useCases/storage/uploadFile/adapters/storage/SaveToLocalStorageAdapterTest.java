@@ -26,8 +26,8 @@ class SaveToLocalStorageAdapterTest {
   void setUp() {
     saveToLocalStorageAdapter = new SaveToLocalStorageAdapter();
     // tempDir/public 경로를 생성하고 주입
-    Path publicPath = tempDir.resolve("public");
-    ReflectionTestUtils.setField(saveToLocalStorageAdapter, "publicPath", publicPath.toString());
+    Path localPath = tempDir.resolve("public");
+    ReflectionTestUtils.setField(saveToLocalStorageAdapter, "localPath", localPath.toString());
   }
 
   @Test
@@ -78,7 +78,7 @@ class SaveToLocalStorageAdapterTest {
     // Given
     InputStream inputStream = new ByteArrayInputStream("hack".getBytes());
     String subPath = "images";
-    String filename = "../../../etc/passwd"; 
+    String filename = "../../../etc/passwd";
 
     // When & Then
     assertThatThrownBy(() -> saveToLocalStorageAdapter.operate(inputStream, subPath, filename))

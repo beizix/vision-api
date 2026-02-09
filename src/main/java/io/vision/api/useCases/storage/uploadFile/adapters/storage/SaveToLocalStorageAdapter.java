@@ -18,8 +18,8 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class SaveToLocalStorageAdapter implements SaveToFileStoragePortOut {
 
-  @Value("${app.upload.path}")
-  private String publicPath;
+  @Value("${spring.local.upload.path}")
+  private String localPath;
 
   @Override
   public FileStorageType getStorageType() {
@@ -30,7 +30,7 @@ public class SaveToLocalStorageAdapter implements SaveToFileStoragePortOut {
   public void operate(InputStream inputStream, String createSubPath, String createFilename)
       throws IOException {
 
-    Path filePath = Paths.get(publicPath, createSubPath);
+    Path filePath = Paths.get(localPath, createSubPath);
     Files.createDirectories(filePath);
 
     Path destinationFile =

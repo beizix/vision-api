@@ -16,10 +16,10 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class SaveToS3StorageAdapter implements SaveToFileStoragePortOut {
   private final S3Template s3Template;
 
-  @Value("${app.aws.s3.bucketName:#{null}}")
+  @Value("${spring.cloud.aws.s3.bucket:#{null}}")
   private String bucketName;
 
-  @Value("${app.aws.s3.bucketFolder:#{null}}")
+  @Value("${spring.cloud.aws.s3.folder:#{null}}")
   private String bucketFolder;
 
   @Override

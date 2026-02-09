@@ -11,10 +11,10 @@ import org.springframework.web.util.UriComponentsBuilder;
 @Component
 @RequiredArgsConstructor
 public class GetS3ResourceURLAdapter implements GetResourceURLPortOut {
-  @Value("${app.aws.s3.domain:#{null}}")
+  @Value("${spring.cloud.aws.s3.domain:#{null}}")
   private String cloudFrontDomain;
 
-  @Value("${app.aws.s3.bucketFolder:#{null}}")
+  @Value("${spring.cloud.aws.s3.folder:#{null}}")
   private String bucketFolder;
 
   @Override

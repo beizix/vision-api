@@ -13,6 +13,22 @@ spring:
       max-file-size: 10MB          # 최대 파일 크기
       max-request-size: 50MB       # 최대 요청 크기
       file-size-threshold: 1MB     # 메모리에 저장될 임계 크기
+  # 파일 업로드 설정 - `s3`
+  cloud:
+    aws:
+      region:
+        static: ap-northeast-2    # region
+      credentials:
+        access-key: YOUR_KEY
+        secret-key: YOUR_SECRET
+      s3:
+        bucket: YOUR_BUCKET
+        folder: YOUR_FOLDER
+        domain: YOUR_DOMAIN  # s3 or cloudfront domain
+  # 파일 업로드 설정 - `local`
+  local:
+    upload:
+      path: ${user.home}/vision/upload
   jpa:
     hibernate:
       ddl-auto: update
@@ -20,8 +36,3 @@ spring:
     properties:
       hibernate:
         format_sql: true
-
-app:
-  # 파일 업로드 설정
-  upload:
-    path: ${user.home}/vision/upload
