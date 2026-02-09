@@ -10,9 +10,10 @@ import lombok.RequiredArgsConstructor;
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum FileUploadType {
   // 사용자 프로필 이미지
-  USER_IMAGE(FileStorageType.LOCAL, "/ogImage", Set.of(AcceptableFileType.IMAGE)),
+  USER_IMAGE(FileStorageType.LOCAL, "/user/images", Set.of(AcceptableFileType.IMAGE)),
+  MANAGER_IMAGE(FileStorageType.S3, "/manager/images", Set.of(AcceptableFileType.IMAGE)),
   // WEB Editor 이미지 파일
-  EDITOR_IMAGE(FileStorageType.LOCAL, "/editorImage", Set.of(AcceptableFileType.IMAGE));
+  EDITOR_IMAGE(FileStorageType.LOCAL, "/editor/images", Set.of(AcceptableFileType.IMAGE));
 
   private final FileStorageType fileStorageType;
   private final String subPath;

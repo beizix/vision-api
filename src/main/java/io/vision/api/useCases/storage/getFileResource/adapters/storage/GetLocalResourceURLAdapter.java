@@ -1,10 +1,8 @@
 package io.vision.api.useCases.storage.getFileResource.adapters.storage;
 
 import io.vision.api.useCases.storage.getFileResource.application.GetResourceURLPortOut;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
 import io.vision.api.useCases.storage.uploadFile.application.model.FileStorageType;
+import java.nio.file.Paths;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
