@@ -28,7 +28,7 @@ class SaveFileMetadataPersistAdapterTest extends DataJpaTestBase {
   void save_file_metadata_success() {
     // Given
     SaveFileMetadataCmd cmd = new SaveFileMetadataCmd(
-        FileUploadType.USER_IMAGE,
+        FileUploadType.UPLOAD_IMG_TO_LOCAL,
         "/path/202602",
         "uuid-name.png",
         "original.png",

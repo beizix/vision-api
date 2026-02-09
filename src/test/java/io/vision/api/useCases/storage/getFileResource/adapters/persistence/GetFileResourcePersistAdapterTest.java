@@ -29,7 +29,7 @@ class GetFileResourcePersistAdapterTest extends DataJpaTestBase {
   void get_file_resource_success() {
     // Given
     UUID fileId = UUID.randomUUID();
-    FileUploadType type = FileUploadType.USER_IMAGE;
+    FileUploadType type = FileUploadType.UPLOAD_IMG_TO_LOCAL;
     String path = "/images/202602";
     String name = "uuid-image.png";
 
@@ -41,7 +41,7 @@ class GetFileResourcePersistAdapterTest extends DataJpaTestBase {
         .originName("original.png")
         .fileLength(1024L)
         .build();
-    
+
     repository.save(entity);
 
     // When

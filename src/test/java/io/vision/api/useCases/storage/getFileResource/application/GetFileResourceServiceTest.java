@@ -2,11 +2,9 @@ package io.vision.api.useCases.storage.getFileResource.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 import io.vision.api.useCases.storage.getFileResource.application.model.GetFileResource;
 import io.vision.api.useCases.storage.uploadFile.application.model.FileStorageType;
@@ -36,9 +34,9 @@ class GetFileResourceServiceTest {
   void setUp() {
     // 전략 Mock 설정
     lenient().when(localUrlStrategy.getStorageType()).thenReturn(FileStorageType.LOCAL);
-    
+
     getFileResourceService = new GetFileResourceService(
-        getFileResourcePortOut, 
+        getFileResourcePortOut,
         Set.of(localUrlStrategy)
     );
   }
@@ -50,7 +48,7 @@ class GetFileResourceServiceTest {
     UUID fileId = UUID.randomUUID();
     String path = "/images/202602";
     String filename = "uuid.png";
-    FileUploadType fileType = FileUploadType.USER_IMAGE; // LOCAL StorageType
+    FileUploadType fileType = FileUploadType.UPLOAD_IMG_TO_LOCAL; // LOCAL StorageType
 
     GetFileResource fileResource = new GetFileResource(fileType, path, filename);
     String expectedUrl = "/uploads/images/202602/uuid.png";
@@ -75,11 +73,11 @@ class GetFileResourceServiceTest {
     // FileUploadType을 Mocking하거나, 전략이 없는 새로운 타입이 필요하지만
     // 여기서는 전략 목록을 비워서 테스트
     GetFileResourceService noStrategyService = new GetFileResourceService(
-        getFileResourcePortOut, 
+        getFileResourcePortOut,
         Set.of() // Empty strategies
     );
 
-    GetFileResource fileResource = new GetFileResource(FileUploadType.USER_IMAGE, "/path", "file.png");
+    GetFileResource fileResource = new GetFileResource(FileUploadType.UPLOAD_IMG_TO_LOCAL, "/path", "file.png");
     given(getFileResourcePortOut.operate(fileId)).willReturn(fileResource);
 
     // When & Then

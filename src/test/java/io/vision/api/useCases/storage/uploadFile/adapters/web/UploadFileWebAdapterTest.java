@@ -14,7 +14,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import io.vision.api.support.WebMvcTestBase;
 import io.vision.api.useCases.storage.getFileResource.application.GetFileResourceUseCase;
-import io.vision.api.useCases.storage.uploadFile.adapters.web.model.UploadBase64Req;
 import io.vision.api.useCases.storage.uploadFile.application.UploadFileUseCase;
 import io.vision.api.useCases.storage.uploadFile.application.model.FileUploadType;
 import io.vision.api.useCases.storage.uploadFile.application.model.UploadFile;
@@ -47,7 +46,7 @@ class UploadFileWebAdapterTest extends WebMvcTestBase {
         MediaType.IMAGE_PNG_VALUE,
         "test content".getBytes()
     );
-    FileUploadType type = FileUploadType.USER_IMAGE;
+    FileUploadType type = FileUploadType.UPLOAD_IMG_TO_LOCAL;
     UUID fileId = UUID.randomUUID();
     UploadFile uploadFile = new UploadFile(fileId, type, "/path/to/file", "saved.png", "test.png", 100L);
     String resourceUrl = "/uploads/path/to/file/saved.png";
@@ -65,7 +64,7 @@ class UploadFileWebAdapterTest extends WebMvcTestBase {
         .andExpect(jsonPath("$.id").exists())
         .andExpect(jsonPath("$.originName").value("test.png"))
         .andExpect(jsonPath("$.referURL").value(resourceUrl));
-    
+
     verify(uploadFileUseCase).operate(eq(type), any(InputStream.class), anyString(), anyLong());
     verify(getFileResourceUseCase).operate(fileId);
   }
@@ -75,8 +74,8 @@ class UploadFileWebAdapterTest extends WebMvcTestBase {
   void upload_base64_success() throws Exception {
     // Given
     String base64Data = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==";
-    FileUploadType type = FileUploadType.EDITOR_IMAGE;
-    
+    FileUploadType type = FileUploadType.UPLOAD_IMG_TO_LOCAL;
+
     // Enum이 @JsonFormat(Shape.OBJECT)로 설정되어 있어 objectMapper 사용 시 객체로 직렬화됨.
     // 서버의 @RequestBody 역직렬화 호환성을 위해 문자열로 직접 JSON 구성
     String requestBody = """
@@ -85,7 +84,7 @@ class UploadFileWebAdapterTest extends WebMvcTestBase {
           "base64Data": "%s"
         }
         """.formatted(type.name(), base64Data);
-    
+
     UUID fileId = UUID.randomUUID();
     UploadFile uploadFile = new UploadFile(fileId, type, "/path/to/file", "saved.png", "image.png", 100L);
     String resourceUrl = "/uploads/path/to/file/saved.png";

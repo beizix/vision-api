@@ -9,7 +9,6 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 import io.vision.api.useCases.storage.uploadFile.application.model.FileStorageType;
 import io.vision.api.useCases.storage.uploadFile.application.model.FileUploadType;
@@ -51,7 +50,7 @@ class UploadFileServiceTest {
     // 일부 실패 테스트에서는 전략을 조회하지 않으므로 lenient() 사용
     lenient().when(localStorageStrategy.getStorageType()).thenReturn(FileStorageType.LOCAL);
     Set<SaveToFileStoragePortOut> strategies = Set.of(localStorageStrategy);
-    
+
     uploadFileService = new UploadFileService(strategies, saveFileMetadataPortOut, tika);
   }
 
@@ -62,7 +61,7 @@ class UploadFileServiceTest {
     InputStream inputStream = new ByteArrayInputStream("test image content".getBytes());
     String originalFilename = "test.png";
     long fileSize = 1024L;
-    FileUploadType type = FileUploadType.USER_IMAGE;
+    FileUploadType type = FileUploadType.UPLOAD_IMG_TO_LOCAL;
     UUID expectedId = UUID.randomUUID();
 
     given(tika.detect(any(InputStream.class), eq(originalFilename))).willReturn("image/png");
@@ -76,7 +75,7 @@ class UploadFileServiceTest {
     assertThat(result).isPresent();
     assertThat(result.get().getId()).isEqualTo(expectedId);
     assertThat(result.get().getOriginName()).isEqualTo(originalFilename);
-    
+
     then(localStorageStrategy).should().operate(any(InputStream.class), anyString(), anyString());
     then(saveFileMetadataPortOut).should().operate(any(SaveFileMetadataCmd.class));
   }
@@ -89,8 +88,8 @@ class UploadFileServiceTest {
     String originalFilename = "testfile"; // No extension
 
     // When & Then
-    assertThatThrownBy(() -> 
-        uploadFileService.operate(FileUploadType.USER_IMAGE, inputStream, originalFilename, 100L))
+    assertThatThrownBy(() ->
+        uploadFileService.operate(FileUploadType.UPLOAD_IMG_TO_LOCAL, inputStream, originalFilename, 100L))
         .isInstanceOf(RuntimeException.class)
         .hasMessageContaining("파일 확장자가 존재하지 않습니다");
   }
@@ -103,8 +102,8 @@ class UploadFileServiceTest {
     String originalFilename = "test.exe"; // Not allowed for USER_IMAGE
 
     // When & Then
-    assertThatThrownBy(() -> 
-        uploadFileService.operate(FileUploadType.USER_IMAGE, inputStream, originalFilename, 100L))
+    assertThatThrownBy(() ->
+        uploadFileService.operate(FileUploadType.UPLOAD_IMG_TO_LOCAL, inputStream, originalFilename, 100L))
         .isInstanceOf(RuntimeException.class)
         .hasMessageContaining("허용되지 않는 파일 확장자입니다");
   }
@@ -115,13 +114,13 @@ class UploadFileServiceTest {
     // Given
     InputStream inputStream = new ByteArrayInputStream("fake image".getBytes());
     String originalFilename = "test.png";
-    
+
     // Tika가 실행 파일로 감지
     given(tika.detect(any(InputStream.class), eq(originalFilename))).willReturn("application/x-dosexec");
 
     // When & Then
-    assertThatThrownBy(() -> 
-        uploadFileService.operate(FileUploadType.USER_IMAGE, inputStream, originalFilename, 100L))
+    assertThatThrownBy(() ->
+        uploadFileService.operate(FileUploadType.UPLOAD_IMG_TO_LOCAL, inputStream, originalFilename, 100L))
         .isInstanceOf(RuntimeException.class)
         .hasMessageContaining("허용되지 않는 MIME Type 입니다");
   }
@@ -131,15 +130,15 @@ class UploadFileServiceTest {
   void upload_fail_no_strategy() throws IOException {
     // Given: 지원하는 전략이 비어있는 서비스 생성
     UploadFileService noStrategyService = new UploadFileService(Set.of(), saveFileMetadataPortOut, tika);
-    
+
     InputStream inputStream = new ByteArrayInputStream("content".getBytes());
     String originalFilename = "test.png";
 
     given(tika.detect(any(InputStream.class), eq(originalFilename))).willReturn("image/png");
 
     // When & Then
-    assertThatThrownBy(() -> 
-        noStrategyService.operate(FileUploadType.USER_IMAGE, inputStream, originalFilename, 100L))
+    assertThatThrownBy(() ->
+        noStrategyService.operate(FileUploadType.UPLOAD_IMG_TO_LOCAL, inputStream, originalFilename, 100L))
         .isInstanceOf(NoSuchElementException.class)
         .hasMessageContaining("No file upload strategy found");
   }
@@ -151,11 +150,11 @@ class UploadFileServiceTest {
     InputStream inputStream = new ByteArrayInputStream("content".getBytes());
 
     // When & Then
-    assertThat(uploadFileService.operate(FileUploadType.USER_IMAGE, null, "test.png", 100L))
+    assertThat(uploadFileService.operate(FileUploadType.UPLOAD_IMG_TO_LOCAL, null, "test.png", 100L))
         .isEmpty();
-    assertThat(uploadFileService.operate(FileUploadType.USER_IMAGE, inputStream, null, 100L))
+    assertThat(uploadFileService.operate(FileUploadType.UPLOAD_IMG_TO_LOCAL, inputStream, null, 100L))
         .isEmpty();
-    assertThat(uploadFileService.operate(FileUploadType.USER_IMAGE, inputStream, "", 100L))
+    assertThat(uploadFileService.operate(FileUploadType.UPLOAD_IMG_TO_LOCAL, inputStream, "", 100L))
         .isEmpty();
   }
 }
