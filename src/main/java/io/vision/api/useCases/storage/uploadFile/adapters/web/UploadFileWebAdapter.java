@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import io.vision.api.useCases.storage.getFileResource.application.GetFileResourceUseCase;
 import io.vision.api.useCases.storage.uploadFile.adapters.web.model.Base64MultipartFile;
 import io.vision.api.useCases.storage.uploadFile.adapters.web.model.UploadBase64Req;
 import io.vision.api.useCases.storage.uploadFile.adapters.web.model.UploadFileRes;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UploadFileWebAdapter {
 
   private final UploadFileUseCase uploadFileUseCase;
+  private final GetFileResourceUseCase getFileResourceUseCase;
 
   @Operation(summary = "Multipart 파일 업로드", description = "Multipart/form-data 형식으로 파일을 업로드합니다.")
   @ApiResponse(
@@ -48,7 +50,11 @@ public class UploadFileWebAdapter {
             .orElseThrow(() -> new RuntimeException("파일 업로드에 실패했습니다."));
 
     return new UploadFileRes(
-        result.getId(), result.getPath(), result.getName(), result.getOriginName(), null);
+        result.getId(),
+        result.getPath(),
+        result.getName(),
+        result.getOriginName(),
+        getFileResourceUseCase.operate(result.getId()));
   }
 
   @Operation(summary = "Base64 파일 업로드", description = "Base64 인코딩된 문자열 형식으로 파일을 업로드합니다.")
@@ -66,6 +72,10 @@ public class UploadFileWebAdapter {
             .orElseThrow(() -> new RuntimeException("파일 업로드에 실패했습니다."));
 
     return new UploadFileRes(
-        result.getId(), result.getPath(), result.getName(), result.getOriginName(), null);
+        result.getId(),
+        result.getPath(),
+        result.getName(),
+        result.getOriginName(),
+        getFileResourceUseCase.operate(result.getId()));
   }
 }

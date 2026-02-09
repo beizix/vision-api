@@ -7,10 +7,12 @@ import java.nio.file.Paths;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @Slf4j
-public class FileStorageConfig {
+public class FileStorageConfig implements WebMvcConfigurer {
 
   @Value("${app.upload.path:#{null}}")
   private String publicPath;
@@ -37,6 +39,17 @@ public class FileStorageConfig {
       Files.createDirectories(Paths.get(path));
     } catch (IOException e) {
       throw new IOException("Could not initialize storage location: " + path, e);
+    }
+  }
+
+  @Override
+  public void addResourceHandlers(ResourceHandlerRegistry registry) {
+    if (publicPath != null && !publicPath.isBlank()) {
+      String resourcePath = "file:" + Paths.get(publicPath).toAbsolutePath().toString() + "/";
+      registry.addResourceHandler("/uploads/**")
+          .addResourceLocations(resourcePath);
+      
+      log.info("Mapped '/uploads/**' to local resource: {}", resourcePath);
     }
   }
 }
