@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class SaveToLocalStorageAdapter implements SaveToFileStoragePortOut {
 
-  @Value("${spring.local.upload.path}")
+  @Value("${app.upload.path}")
   private String localPath;
 
   @Override

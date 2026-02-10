@@ -26,9 +26,9 @@ public class ManageAuthTokenService implements ManageAuthTokenUseCase {
   private final RefreshTokenPortOut refreshTokenPortOut;
 
   public ManageAuthTokenService(
-      @Value("${jwt.secret:v-api-secret-key-for-jwt-token-generation-2026}") String secret,
-      @Value("${jwt.access-token-validity:3600000}") long accessTokenValidity,
-      @Value("${jwt.refresh-token-validity:86400000}") long refreshTokenValidity,
+      @Value("${jwt.secret}") String secret,
+      @Value("${jwt.access-token-validity}") long accessTokenValidity,
+      @Value("${jwt.refresh-token-validity}") long refreshTokenValidity,
       RefreshTokenPortOut refreshTokenPortOut) {
     this.key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     this.accessTokenValidity = accessTokenValidity;
