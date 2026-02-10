@@ -1,7 +1,7 @@
 package io.vision.api.common.adapters.persistence.entity;
 
 import io.vision.api.common.adapters.persistence.component.AuditEntity;
-import io.vision.api.useCases.storage.saveFile.application.domain.model.FileUploadType;
+import io.vision.api.useCases.file.saveFile.application.domain.model.FileUploadType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
