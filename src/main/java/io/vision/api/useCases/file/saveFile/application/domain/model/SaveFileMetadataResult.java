@@ -12,6 +12,6 @@ import java.util.UUID;
  * @param originName 원본 파일명
  * @param fileLength 파일 크기 (bytes)
  */
-public record SaveFileMetadata(
+public record SaveFileMetadataResult(
   UUID id, FileUploadType type, String path, String name, String originName, Long fileLength) {
 }

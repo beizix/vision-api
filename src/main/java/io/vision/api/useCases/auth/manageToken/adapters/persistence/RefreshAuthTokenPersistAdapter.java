@@ -1,7 +1,7 @@
 package io.vision.api.useCases.auth.manageToken.adapters.persistence;
 
 import io.vision.api.common.adapters.persistence.repository.UserRepository;
-import io.vision.api.useCases.auth.manageToken.application.ports.RefreshTokenPortOut;
+import io.vision.api.useCases.auth.manageToken.application.RefreshAuthToken;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @RequiredArgsConstructor
-public class RefreshTokenPersistAdapter implements RefreshTokenPortOut {
+public class RefreshAuthTokenPersistAdapter implements RefreshAuthToken {
 
   private final UserRepository userRepository;
 

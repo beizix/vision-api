@@ -7,9 +7,6 @@ import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.verify;
 
 import io.vision.api.useCases.file.getFileURL.application.domain.GetFileURLService;
-import io.vision.api.useCases.file.getFileURL.application.domain.model.GetFileURL;
-import io.vision.api.useCases.file.getFileURL.application.ports.GetFileMetadataPortOut;
-import io.vision.api.useCases.file.getFileURL.application.ports.GetFileURLPortOut;
 import io.vision.api.useCases.file.saveFile.application.domain.model.FileStorageType;
 import io.vision.api.useCases.file.saveFile.application.domain.model.FileUploadType;
 import java.util.NoSuchElementException;
@@ -26,10 +23,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class GetFileURLServiceTest {
 
   @Mock
-  private GetFileMetadataPortOut getFileMetadataPortOut;
+  private GetFileMetadata getFileMetadata;
 
   @Mock
-  private GetFileURLPortOut localUrlStrategy;
+  private GetFileURL localUrlStrategy;
 
   private GetFileURLService getFileResourceService;
 
@@ -39,7 +36,7 @@ class GetFileURLServiceTest {
     lenient().when(localUrlStrategy.getStorageType()).thenReturn(FileStorageType.LOCAL);
 
     getFileResourceService = new GetFileURLService(
-      getFileMetadataPortOut,
+      getFileMetadata,
         Set.of(localUrlStrategy)
     );
   }
@@ -53,10 +50,10 @@ class GetFileURLServiceTest {
     String filename = "uuid.png";
     FileUploadType fileType = FileUploadType.UPLOAD_IMG_TO_LOCAL; // LOCAL StorageType
 
-    GetFileURL fileResource = new GetFileURL(fileType, path, filename);
+    io.vision.api.useCases.file.getFileURL.application.domain.model.GetFileURL fileResource = new io.vision.api.useCases.file.getFileURL.application.domain.model.GetFileURL(fileType, path, filename);
     String expectedUrl = "/uploads/images/202602/uuid.png";
 
-    given(getFileMetadataPortOut.operate(fileId)).willReturn(fileResource);
+    given(getFileMetadata.operate(fileId)).willReturn(fileResource);
     given(localUrlStrategy.operate(path, filename)).willReturn(expectedUrl);
 
     // When
@@ -64,7 +61,7 @@ class GetFileURLServiceTest {
 
     // Then
     assertThat(result).isEqualTo(expectedUrl);
-    verify(getFileMetadataPortOut).operate(fileId);
+    verify(getFileMetadata).operate(fileId);
     verify(localUrlStrategy).operate(path, filename);
   }
 
@@ -76,12 +73,12 @@ class GetFileURLServiceTest {
     // FileUploadType을 Mocking하거나, 전략이 없는 새로운 타입이 필요하지만
     // 여기서는 전략 목록을 비워서 테스트
     GetFileURLService noStrategyService = new GetFileURLService(
-      getFileMetadataPortOut,
+      getFileMetadata,
         Set.of() // Empty strategies
     );
 
-    GetFileURL fileResource = new GetFileURL(FileUploadType.UPLOAD_IMG_TO_LOCAL, "/path", "file.png");
-    given(getFileMetadataPortOut.operate(fileId)).willReturn(fileResource);
+    io.vision.api.useCases.file.getFileURL.application.domain.model.GetFileURL fileResource = new io.vision.api.useCases.file.getFileURL.application.domain.model.GetFileURL(FileUploadType.UPLOAD_IMG_TO_LOCAL, "/path", "file.png");
+    given(getFileMetadata.operate(fileId)).willReturn(fileResource);
 
     // When & Then
     assertThatThrownBy(() -> noStrategyService.operate(fileId))
@@ -94,7 +91,7 @@ class GetFileURLServiceTest {
   void get_resource_url_fail_not_found() {
     // Given
     UUID fileId = UUID.randomUUID();
-    given(getFileMetadataPortOut.operate(fileId)).willThrow(new NoSuchElementException("Not found"));
+    given(getFileMetadata.operate(fileId)).willThrow(new NoSuchElementException("Not found"));
 
     // When & Then
     assertThatThrownBy(() -> getFileResourceService.operate(fileId))

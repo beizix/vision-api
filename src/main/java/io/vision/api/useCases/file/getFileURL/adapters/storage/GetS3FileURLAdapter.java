@@ -1,6 +1,6 @@
 package io.vision.api.useCases.file.getFileURL.adapters.storage;
 
-import io.vision.api.useCases.file.getFileURL.application.ports.GetFileURLPortOut;
+import io.vision.api.useCases.file.getFileURL.application.GetFileURL;
 import io.vision.api.useCases.file.saveFile.application.domain.model.FileStorageType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,7 +9,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @Component
 @RequiredArgsConstructor
-public class GetS3FileURLAdapter implements GetFileURLPortOut {
+public class GetS3FileURLAdapter implements GetFileURL {
   @Value("${spring.cloud.aws.s3.domain:#{null}}")
   private String cloudFrontDomain;
 

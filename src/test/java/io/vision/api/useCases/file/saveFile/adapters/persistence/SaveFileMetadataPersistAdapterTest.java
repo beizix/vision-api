@@ -6,7 +6,7 @@ import io.vision.api.common.adapters.persistence.entity.FileMetadataEntity;
 import io.vision.api.common.adapters.persistence.repository.FileMetadataRepository;
 import io.vision.api.support.DataJpaTestBase;
 import io.vision.api.useCases.file.saveFile.application.domain.model.FileUploadType;
-import io.vision.api.useCases.file.saveFile.application.domain.model.SaveFileMetadata;
+import io.vision.api.useCases.file.saveFile.application.domain.model.SaveFileMetadataResult;
 import io.vision.api.useCases.file.saveFile.application.domain.model.SaveFileMetadataCmd;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
@@ -36,11 +36,11 @@ class SaveFileMetadataPersistAdapterTest extends DataJpaTestBase {
     );
 
     // When
-    Optional<SaveFileMetadata> result = adapter.operate(cmd);
+    Optional<SaveFileMetadataResult> result = adapter.operate(cmd);
 
     // Then
     assertThat(result).isPresent();
-    SaveFileMetadata saved = result.get();
+    SaveFileMetadataResult saved = result.get();
     assertThat(saved.id()).isNotNull();
     assertThat(saved.type()).isEqualTo(cmd.type());
     assertThat(saved.path()).isEqualTo(cmd.path());

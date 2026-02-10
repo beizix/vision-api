@@ -59,7 +59,6 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 	systemProperty "file.encoding", "UTF-8"
-	systemProperty "aws.region", "ap-northeast-2"
 }
 
 bootRun {

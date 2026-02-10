@@ -1,4 +1,4 @@
-package io.vision.api.useCases.auth.manageToken.application.ports;
+package io.vision.api.useCases.auth.manageToken.application;
 
 import io.vision.api.common.application.enums.Role;
 import java.util.Optional;
@@ -6,7 +6,7 @@ import java.util.Optional;
 /**
  * 리프레시 토큰의 저장 및 조회를 담당하는 출력 포트입니다.
  */
-public interface RefreshTokenPortOut {
+public interface RefreshAuthToken {
 
   /**
    * 리프레시 토큰을 통해 갱신 대상 사용자 정보를 조회하기 위한 모델입니다.

@@ -11,11 +11,11 @@ import io.vision.api.useCases.auth.manageToken.application.domain.model.CreateTo
 import io.vision.api.useCases.auth.manageToken.application.domain.model.AuthToken;
 import io.vision.api.useCases.auth.login.application.domain.LoginService;
 import io.vision.api.useCases.auth.login.application.domain.model.LoginCmd;
-import io.vision.api.useCases.auth.login.application.domain.model.GetUser;
+import io.vision.api.useCases.auth.login.application.domain.model.GetUserResult;
 import java.util.Optional;
 import java.util.UUID;
 
-import io.vision.api.useCases.auth.login.application.ports.GetUserPortOut;
+import io.vision.api.useCases.auth.login.application.GetUser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,7 +31,7 @@ class LoginUseCaseTest {
   private LoginService loginService;
 
   @Mock
-  private GetUserPortOut getUserPortOut;
+  private GetUser getUser;
 
   @Mock
   private PasswordEncoder passwordEncoder;
@@ -47,9 +47,9 @@ class LoginUseCaseTest {
     String password = "password";
     String encodedPassword = "encodedPassword";
     LoginCmd cmd = new LoginCmd(email, password);
-    GetUser user = new GetUser(UUID.randomUUID(), email, encodedPassword, "Test User", Role.USER);
+    GetUserResult user = new GetUserResult(UUID.randomUUID(), email, encodedPassword, "Test User", Role.USER);
 
-    given(getUserPortOut.operate(email)).willReturn(Optional.of(user));
+    given(getUser.operate(email)).willReturn(Optional.of(user));
     given(passwordEncoder.matches(password, encodedPassword)).willReturn(true);
     given(manageAuthTokenUseCase.createToken(any(CreateTokenCmd.class)))
         .willReturn(new AuthToken("access", "refresh"));

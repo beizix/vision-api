@@ -1,4 +1,4 @@
-package io.vision.api.useCases.auth.signup.application.ports;
+package io.vision.api.useCases.auth.signup.application;
 
 import io.vision.api.common.application.enums.Role;
 import io.vision.api.useCases.auth.signup.application.domain.model.SignupUser;
@@ -6,7 +6,7 @@ import io.vision.api.useCases.auth.signup.application.domain.model.SignupUser;
 /**
  * 회원가입 유스케이스에서 요구하는 영속성 작업을 정의한 출력 포트입니다.
  */
-public interface ManageSignupPortOut {
+public interface ManageSignup {
   /**
    * 해당 이메일과 권한을 가진 사용자가 이미 존재하는지 확인합니다.
    *

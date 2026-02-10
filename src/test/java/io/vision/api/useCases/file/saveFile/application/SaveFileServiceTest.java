@@ -13,7 +13,7 @@ import static org.mockito.Mockito.mock;
 import io.vision.api.useCases.file.saveFile.application.domain.SaveFileService;
 import io.vision.api.useCases.file.saveFile.application.domain.model.FileStorageType;
 import io.vision.api.useCases.file.saveFile.application.domain.model.FileUploadType;
-import io.vision.api.useCases.file.saveFile.application.domain.model.SaveFileMetadata;
+import io.vision.api.useCases.file.saveFile.application.domain.model.SaveFileMetadataResult;
 import io.vision.api.useCases.file.saveFile.application.domain.model.SaveFileMetadataCmd;
 import io.vision.api.useCases.file.saveFile.application.domain.model.SaveFile;
 import java.io.ByteArrayInputStream;
@@ -24,8 +24,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
-import io.vision.api.useCases.file.saveFile.application.ports.SaveFileMetadataPortOut;
-import io.vision.api.useCases.file.saveFile.application.ports.SaveToFileStoragePortOut;
 import org.apache.tika.Tika;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -38,13 +36,13 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class SaveFileServiceTest {
 
   @Mock
-  private SaveFileMetadataPortOut saveFileMetadataPortOut;
+  private SaveFileMetadata saveFileMetadata;
 
   @Mock
   private Tika tika;
 
   @Mock
-  private SaveToFileStoragePortOut localStorageStrategy;
+  private SaveToFileStorage localStorageStrategy;
 
   private SaveFileService uploadFileService;
 
@@ -53,9 +51,9 @@ class SaveFileServiceTest {
     // 기본적으로 로컬 스토리지 전략을 지원하도록 설정
     // 일부 실패 테스트에서는 전략을 조회하지 않으므로 lenient() 사용
     lenient().when(localStorageStrategy.getStorageType()).thenReturn(FileStorageType.LOCAL);
-    Set<SaveToFileStoragePortOut> strategies = Set.of(localStorageStrategy);
+    Set<SaveToFileStorage> strategies = Set.of(localStorageStrategy);
 
-    uploadFileService = new SaveFileService(strategies, saveFileMetadataPortOut, tika);
+    uploadFileService = new SaveFileService(strategies, saveFileMetadata, tika);
   }
 
   @Test
@@ -69,8 +67,8 @@ class SaveFileServiceTest {
     UUID expectedId = UUID.randomUUID();
 
     given(tika.detect(any(InputStream.class), eq(originalFilename))).willReturn("image/png");
-    given(saveFileMetadataPortOut.operate(any(SaveFileMetadataCmd.class)))
-        .willReturn(Optional.of(new SaveFileMetadata(expectedId, type, "/path", "uuid.png", originalFilename, fileSize)));
+    given(saveFileMetadata.operate(any(SaveFileMetadataCmd.class)))
+        .willReturn(Optional.of(new SaveFileMetadataResult(expectedId, type, "/path", "uuid.png", originalFilename, fileSize)));
 
     // When
     Optional<SaveFile> result = uploadFileService.operate(type, inputStream, originalFilename, fileSize);
@@ -81,7 +79,7 @@ class SaveFileServiceTest {
     assertThat(result.get().originName()).isEqualTo(originalFilename);
 
     then(localStorageStrategy).should().operate(any(InputStream.class), anyString(), anyString());
-    then(saveFileMetadataPortOut).should().operate(any(SaveFileMetadataCmd.class));
+    then(saveFileMetadata).should().operate(any(SaveFileMetadataCmd.class));
   }
 
   @Test
@@ -133,7 +131,7 @@ class SaveFileServiceTest {
   @DisplayName("Scenario: 실패 - 지원하지 않는 스토리지 타입인 경우 예외 발생")
   void upload_fail_no_strategy() throws IOException {
     // Given: 지원하는 전략이 비어있는 서비스 생성
-    SaveFileService noStrategyService = new SaveFileService(Set.of(), saveFileMetadataPortOut, tika);
+    SaveFileService noStrategyService = new SaveFileService(Set.of(), saveFileMetadata, tika);
 
     InputStream inputStream = new ByteArrayInputStream("content".getBytes());
     String originalFilename = "test.png";

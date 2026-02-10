@@ -1,7 +1,7 @@
 package io.vision.api.useCases.file.saveFile.adapters.storage;
 
 import io.awspring.cloud.s3.S3Template;
-import io.vision.api.useCases.file.saveFile.application.ports.SaveToFileStoragePortOut;
+import io.vision.api.useCases.file.saveFile.application.SaveToFileStorage;
 import io.vision.api.useCases.file.saveFile.application.domain.model.FileStorageType;
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,7 +13,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @Component
 @RequiredArgsConstructor
-public class SaveToS3StorageAdapter implements SaveToFileStoragePortOut {
+public class SaveToS3StorageAdapter implements SaveToFileStorage {
   private final S3Template s3Template;
 
   @Value("${spring.cloud.aws.s3.bucket:#{null}}")

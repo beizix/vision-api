@@ -5,8 +5,8 @@ import io.vision.api.useCases.auth.manageToken.application.domain.model.CreateTo
 import io.vision.api.useCases.auth.manageToken.application.domain.model.AuthToken;
 import io.vision.api.useCases.auth.login.application.LoginUseCase;
 import io.vision.api.useCases.auth.login.application.domain.model.LoginCmd;
-import io.vision.api.useCases.auth.login.application.domain.model.GetUser;
-import io.vision.api.useCases.auth.login.application.ports.GetUserPortOut;
+import io.vision.api.useCases.auth.login.application.domain.model.GetUserResult;
+import io.vision.api.useCases.auth.login.application.GetUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,13 +15,13 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class LoginService implements LoginUseCase {
 
-  private final GetUserPortOut getUserPortOut;
+  private final GetUser getUser;
   private final ManageAuthTokenUseCase manageAuthTokenUseCase;
   private final PasswordEncoder passwordEncoder;
 
   @Override
   public AuthToken operate(LoginCmd cmd) {
-    GetUser user = getUserPortOut
+    GetUserResult user = getUser
         .operate(cmd.email())
         .orElseThrow(() -> new IllegalArgumentException("User not found"));
 

@@ -2,8 +2,8 @@ package io.vision.api.useCases.file.saveFile.adapters.persistence;
 
 import io.vision.api.common.adapters.persistence.entity.FileMetadataEntity;
 import io.vision.api.common.adapters.persistence.repository.FileMetadataRepository;
-import io.vision.api.useCases.file.saveFile.application.ports.SaveFileMetadataPortOut;
-import io.vision.api.useCases.file.saveFile.application.domain.model.SaveFileMetadata;
+import io.vision.api.useCases.file.saveFile.application.SaveFileMetadata;
+import io.vision.api.useCases.file.saveFile.application.domain.model.SaveFileMetadataResult;
 import io.vision.api.useCases.file.saveFile.application.domain.model.SaveFileMetadataCmd;
 import java.util.Optional;
 import java.util.UUID;
@@ -12,11 +12,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class SaveFileMetadataPersistAdapter implements SaveFileMetadataPortOut {
+public class SaveFileMetadataPersistAdapter implements SaveFileMetadata {
   private final FileMetadataRepository fileMetadataRepo;
 
   @Override
-  public Optional<SaveFileMetadata> operate(SaveFileMetadataCmd cmd) {
+  public Optional<SaveFileMetadataResult> operate(SaveFileMetadataCmd cmd) {
     FileMetadataEntity fileMetadata =
         fileMetadataRepo.save(
             new FileMetadataEntity(
@@ -28,7 +28,7 @@ public class SaveFileMetadataPersistAdapter implements SaveFileMetadataPortOut {
                 cmd.fileLength()));
 
     return Optional.of(
-        new SaveFileMetadata(
+        new SaveFileMetadataResult(
             fileMetadata.getId(),
             fileMetadata.getType(),
             fileMetadata.getPath(),

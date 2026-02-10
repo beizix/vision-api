@@ -11,8 +11,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-import io.vision.api.useCases.file.saveFile.application.ports.SaveFileMetadataPortOut;
-import io.vision.api.useCases.file.saveFile.application.ports.SaveToFileStoragePortOut;
+import io.vision.api.useCases.file.saveFile.application.SaveFileMetadata;
+import io.vision.api.useCases.file.saveFile.application.SaveToFileStorage;
 import lombok.RequiredArgsConstructor;
 import org.apache.tika.Tika;
 import org.springframework.stereotype.Service;
@@ -20,8 +20,8 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class SaveFileService implements SaveFileUseCase {
-  private final Set<SaveToFileStoragePortOut> fileUploadStrategies;
-  private final SaveFileMetadataPortOut saveFileMetadataPortOut;
+  private final Set<SaveToFileStorage> fileUploadStrategies;
+  private final SaveFileMetadata saveFileMetadata;
   private final Tika tika;
 
   /**
@@ -51,8 +51,8 @@ public class SaveFileService implements SaveFileUseCase {
       getFileUploadStrategy(fileUploadType.getFileStorageType())
           .operate(bis, subPath, createFilename);
 
-      SaveFileMetadata saveFileMetadata =
-          saveFileMetadataPortOut
+      SaveFileMetadataResult saveFileMetadata =
+          this.saveFileMetadata
               .operate(
                   new SaveFileMetadataCmd(
                       fileUploadType, subPath, createFilename, originalFilename, fileSize))
@@ -125,11 +125,11 @@ public class SaveFileService implements SaveFileUseCase {
     return UUID.randomUUID() + "." + extension;
   }
 
-  private SaveToFileStoragePortOut getFileUploadStrategy(FileStorageType fileStorageType) {
+  private SaveToFileStorage getFileUploadStrategy(FileStorageType fileStorageType) {
     return fileUploadStrategies.stream()
         .filter(
-            saveToFileStoragePortOut ->
-                saveToFileStoragePortOut.getStorageType().equals(fileStorageType))
+          saveToFileStorage ->
+                saveToFileStorage.getStorageType().equals(fileStorageType))
         .findFirst()
         .orElseThrow(
             () ->

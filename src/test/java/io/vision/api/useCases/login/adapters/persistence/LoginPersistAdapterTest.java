@@ -7,7 +7,7 @@ import io.vision.api.common.adapters.persistence.repository.UserRepository;
 import io.vision.api.common.application.enums.Role;
 import io.vision.api.support.DataJpaTestBase;
 import io.vision.api.useCases.auth.login.adapters.persistence.GetUserPersistAdapter;
-import io.vision.api.useCases.auth.login.application.domain.model.GetUser;
+import io.vision.api.useCases.auth.login.application.domain.model.GetUserResult;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -31,7 +31,7 @@ class LoginPersistAdapterTest extends DataJpaTestBase {
     userRepository.save(new UserEntity(email, "password", "Persist User", Role.USER, null));
 
     // When
-    Optional<GetUser> result = loginPersistAdapter.operate(email);
+    Optional<GetUserResult> result = loginPersistAdapter.operate(email);
 
     // Then
     assertThat(result).isPresent();

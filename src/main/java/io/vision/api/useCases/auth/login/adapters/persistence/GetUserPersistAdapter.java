@@ -1,25 +1,25 @@
 package io.vision.api.useCases.auth.login.adapters.persistence;
 
 import io.vision.api.common.adapters.persistence.repository.UserRepository;
-import io.vision.api.useCases.auth.login.application.ports.GetUserPortOut;
-import io.vision.api.useCases.auth.login.application.domain.model.GetUser;
+import io.vision.api.useCases.auth.login.application.GetUser;
+import io.vision.api.useCases.auth.login.application.domain.model.GetUserResult;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class GetUserPersistAdapter implements GetUserPortOut {
+public class GetUserPersistAdapter implements GetUser {
 
   private final UserRepository userRepository;
 
   @Override
-  public Optional<GetUser> operate(String email) {
+  public Optional<GetUserResult> operate(String email) {
     return userRepository
         .findByEmail(email)
         .map(
             entity ->
-                new GetUser(
+                new GetUserResult(
                     entity.getId(),
                     entity.getEmail(),
                     entity.getPassword(),

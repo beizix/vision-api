@@ -3,14 +3,14 @@ package io.vision.api.useCases.auth.signup.adapters.persistence;
 import io.vision.api.common.adapters.persistence.entity.UserEntity;
 import io.vision.api.common.adapters.persistence.repository.UserRepository;
 import io.vision.api.common.application.enums.Role;
-import io.vision.api.useCases.auth.signup.application.ports.ManageSignupPortOut;
+import io.vision.api.useCases.auth.signup.application.ManageSignup;
 import io.vision.api.useCases.auth.signup.application.domain.model.SignupUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class ManageSignupPersistAdapter implements ManageSignupPortOut {
+public class ManageSignupPersistAdapter implements ManageSignup {
 
   private final UserRepository userRepository;
 

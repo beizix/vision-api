@@ -12,4 +12,4 @@ import java.util.UUID;
  * @param displayName 사용자 표시 이름
  * @param role        사용자 권한
  */
-public record GetUser(UUID id, String email, String password, String displayName, Role role) {}
+public record GetUserResult(UUID id, String email, String password, String displayName, Role role) {}

@@ -1,6 +1,6 @@
 package io.vision.api.useCases.file.saveFile.adapters.storage;
 
-import io.vision.api.useCases.file.saveFile.application.ports.SaveToFileStoragePortOut;
+import io.vision.api.useCases.file.saveFile.application.SaveToFileStorage;
 import io.vision.api.useCases.file.saveFile.application.domain.model.FileStorageType;
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class SaveToLocalStorageAdapter implements SaveToFileStoragePortOut {
+public class SaveToLocalStorageAdapter implements SaveToFileStorage {
 
   @Value("${app.upload.path}")
   private String localPath;

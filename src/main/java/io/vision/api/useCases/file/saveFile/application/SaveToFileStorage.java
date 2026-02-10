@@ -1,4 +1,4 @@
-package io.vision.api.useCases.file.saveFile.application.ports;
+package io.vision.api.useCases.file.saveFile.application;
 
 import io.vision.api.useCases.file.saveFile.application.domain.model.FileStorageType;
 
@@ -8,7 +8,7 @@ import java.io.InputStream;
 /**
  * 애플리케이션 계층에서 파일 저장소(로컬, S3 등)로 실제 파일 물리 저장을 요청하는 출력 포트입니다.
  */
-public interface SaveToFileStoragePortOut {
+public interface SaveToFileStorage {
   /**
    * 현재 포트 구현체가 지원하는 저장소 유형을 반환합니다.
    *
