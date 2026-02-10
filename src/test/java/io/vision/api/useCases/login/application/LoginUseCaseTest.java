@@ -6,16 +6,16 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 import io.vision.api.common.application.enums.Role;
-import io.vision.api.useCases.auth.application.AuthTokenUseCase;
-import io.vision.api.useCases.auth.application.domain.model.CreateTokenCmd;
-import io.vision.api.useCases.auth.application.domain.model.AuthToken;
-import io.vision.api.useCases.login.application.domain.LoginService;
-import io.vision.api.useCases.login.application.domain.model.LoginCmd;
-import io.vision.api.useCases.login.application.domain.model.GetUser;
+import io.vision.api.useCases.auth.manageToken.application.ManageAuthTokenUseCase;
+import io.vision.api.useCases.auth.manageToken.application.domain.model.CreateTokenCmd;
+import io.vision.api.useCases.auth.manageToken.application.domain.model.AuthToken;
+import io.vision.api.useCases.auth.login.application.domain.LoginService;
+import io.vision.api.useCases.auth.login.application.domain.model.LoginCmd;
+import io.vision.api.useCases.auth.login.application.domain.model.GetUser;
 import java.util.Optional;
 import java.util.UUID;
 
-import io.vision.api.useCases.login.application.ports.GetUserPortOut;
+import io.vision.api.useCases.auth.login.application.ports.GetUserPortOut;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -37,7 +37,7 @@ class LoginUseCaseTest {
   private PasswordEncoder passwordEncoder;
 
   @Mock
-  private AuthTokenUseCase authTokenUseCase;
+  private ManageAuthTokenUseCase manageAuthTokenUseCase;
 
   @Test
   @DisplayName("Scenario: 성공 - 유효한 자격 증명으로 로그인 성공")
@@ -51,7 +51,7 @@ class LoginUseCaseTest {
 
     given(getUserPortOut.operate(email)).willReturn(Optional.of(user));
     given(passwordEncoder.matches(password, encodedPassword)).willReturn(true);
-    given(authTokenUseCase.createToken(any(CreateTokenCmd.class)))
+    given(manageAuthTokenUseCase.createToken(any(CreateTokenCmd.class)))
         .willReturn(new AuthToken("access", "refresh"));
 
     // When
@@ -59,6 +59,6 @@ class LoginUseCaseTest {
 
     // Then
     assertThat(token).isNotNull();
-    verify(authTokenUseCase).createToken(any(CreateTokenCmd.class));
+    verify(manageAuthTokenUseCase).createToken(any(CreateTokenCmd.class));
   }
 }

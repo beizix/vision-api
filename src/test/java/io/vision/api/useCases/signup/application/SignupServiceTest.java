@@ -8,12 +8,12 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 import io.vision.api.common.application.enums.Role;
-import io.vision.api.useCases.auth.application.AuthTokenUseCase;
-import io.vision.api.useCases.auth.application.domain.model.CreateTokenCmd;
-import io.vision.api.useCases.auth.application.domain.model.AuthToken;
-import io.vision.api.useCases.signup.application.domain.SignupService;
-import io.vision.api.useCases.signup.application.domain.model.SignupCmd;
-import io.vision.api.useCases.signup.application.ports.SignupPortOut;
+import io.vision.api.useCases.auth.manageToken.application.ManageAuthTokenUseCase;
+import io.vision.api.useCases.auth.manageToken.application.domain.model.CreateTokenCmd;
+import io.vision.api.useCases.auth.manageToken.application.domain.model.AuthToken;
+import io.vision.api.useCases.auth.signup.application.domain.SignupService;
+import io.vision.api.useCases.auth.signup.application.domain.model.SignupCmd;
+import io.vision.api.useCases.auth.signup.application.ports.SignupPortOut;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,7 +35,7 @@ class SignupServiceTest {
         private PasswordEncoder passwordEncoder;
 
         @Mock
-        private AuthTokenUseCase authTokenUseCase;
+        private ManageAuthTokenUseCase manageAuthTokenUseCase;
 
         @Test
         @DisplayName("Scenario: 성공 - 정상적인 회원가입 요청 시 사용자를 저장하고 토큰을 발급한다")
@@ -45,7 +45,7 @@ class SignupServiceTest {
 
                 given(signupPortOut.existsByEmailAndRole(cmd.email(), cmd.role())).willReturn(false);
                 given(passwordEncoder.encode(cmd.password())).willReturn("encodedPassword");
-                given(authTokenUseCase.createToken(any(CreateTokenCmd.class)))
+                given(manageAuthTokenUseCase.createToken(any(CreateTokenCmd.class)))
                                 .willReturn(new AuthToken("access", "refresh"));
 
                 // When
@@ -65,7 +65,7 @@ class SignupServiceTest {
                                                                                                 cmd.displayName())
                                                                                 && user.role().equals(cmd.role())));
 
-                verify(authTokenUseCase)
+                verify(manageAuthTokenUseCase)
                                 .createToken(
                                                 argThat(
                                                                 authCmd -> authCmd.email().equals(cmd.email())

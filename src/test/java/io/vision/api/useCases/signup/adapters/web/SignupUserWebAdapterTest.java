@@ -8,10 +8,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import io.vision.api.support.WebMvcTestBase;
-import io.vision.api.useCases.auth.application.domain.model.AuthToken;
-import io.vision.api.useCases.signup.adapters.web.model.SignupUserReq;
-import io.vision.api.useCases.signup.application.SignupUseCase;
-import io.vision.api.useCases.signup.application.domain.model.SignupCmd;
+import io.vision.api.useCases.auth.manageToken.application.domain.model.AuthToken;
+import io.vision.api.useCases.auth.signup.adapters.web.SignupUserWebAdapter;
+import io.vision.api.useCases.auth.signup.adapters.web.model.SignupUserReq;
+import io.vision.api.useCases.auth.signup.application.SignupUseCase;
+import io.vision.api.useCases.auth.signup.application.domain.model.SignupCmd;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;

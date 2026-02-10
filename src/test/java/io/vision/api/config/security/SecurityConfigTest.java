@@ -5,7 +5,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import io.vision.api.support.SecurityConfigTestWebAdapter;
-import io.vision.api.useCases.auth.application.AuthTokenUseCase;
+import io.vision.api.useCases.auth.manageToken.application.ManageAuthTokenUseCase;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ class SecurityConfigTest {
   private MockMvc mockMvc;
 
   @MockitoBean
-  private AuthTokenUseCase authTokenUseCase;
+  private ManageAuthTokenUseCase manageAuthTokenUseCase;
 
   @Test
   @DisplayName("Scenario: 성공 - 인증 제외 경로(/api/v1/auth/**)는 토큰 없이 접근 가능하다")

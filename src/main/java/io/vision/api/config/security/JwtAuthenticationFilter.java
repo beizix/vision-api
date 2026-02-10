@@ -1,6 +1,6 @@
 package io.vision.api.config.security;
 
-import io.vision.api.useCases.auth.application.AuthTokenUseCase;
+import io.vision.api.useCases.auth.manageToken.application.ManageAuthTokenUseCase;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,7 +21,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-  private final AuthTokenUseCase authTokenUseCase;
+  private final ManageAuthTokenUseCase manageAuthTokenUseCase;
 
   @Override
   protected void doFilterInternal(
@@ -31,13 +31,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     Optional<String> tokenOptional = resolveToken(request);
 
     tokenOptional
-        .filter(authTokenUseCase::validateToken)
+        .filter(manageAuthTokenUseCase::validateToken)
         .ifPresent(
             token -> {
-              String email = authTokenUseCase.getSubject(token);
+              String email = manageAuthTokenUseCase.getSubject(token);
               List<SimpleGrantedAuthority> authorities = Stream.concat(
-                      Stream.of(authTokenUseCase.getRole(token)),
-                      authTokenUseCase.getPrivileges(token).stream()
+                      Stream.of(manageAuthTokenUseCase.getRole(token)),
+                      manageAuthTokenUseCase.getPrivileges(token).stream()
                   )
                   .filter(Objects::nonNull)
                   .map(SimpleGrantedAuthority::new)
