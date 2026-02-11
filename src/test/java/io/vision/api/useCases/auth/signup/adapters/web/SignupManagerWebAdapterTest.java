@@ -1,4 +1,4 @@
-package io.vision.api.useCases.signup.adapters.web;
+package io.vision.api.useCases.auth.signup.adapters.web;
 
 import io.vision.api.common.application.enums.Role;
 import io.vision.api.support.WebMvcTestBase;

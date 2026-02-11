@@ -1,4 +1,4 @@
-package io.vision.api.useCases.signup.adapters.web;
+package io.vision.api.useCases.auth.signup.adapters.web;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;

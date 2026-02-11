@@ -1,4 +1,4 @@
-package io.vision.api.useCases.signup.adapters.persistence;
+package io.vision.api.useCases.auth.signup.adapters.persistence;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

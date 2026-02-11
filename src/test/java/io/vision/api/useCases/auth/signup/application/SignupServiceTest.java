@@ -1,4 +1,4 @@
-package io.vision.api.useCases.signup.application;
+package io.vision.api.useCases.auth.signup.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

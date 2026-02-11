@@ -1,4 +1,4 @@
-package io.vision.api.useCases.login.application;
+package io.vision.api.useCases.auth.login.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
