@@ -17,16 +17,10 @@ spring:
   cloud:
     aws:
       region:
-        static: ap-northeast-2    # region
-      credentials:
-        # 환경별 시스템 프로퍼티(-Dspring.cloud.aws.credentials.access-key 등)로 주입
-        access-key: YOUR_LOCAL_ACCESS_KEY
-        secret-key: YOUR_LOCAL_SECRET_KEY
+        static: ap-northeast-2
       s3:
-        # 환경별 시스템 프로퍼티(-Dspring.cloud.aws.s3.bucket 등)로 주입
-        bucket: YOUR_LOCAL_BUCKET
-        folder: YOUR_LOCAL_FOLDER
-        domain: YOUR_LOCAL_DOMAIN  # s3 or cloudfront domain
+        # S3 비활성화 시 관련 설정을 끔
+        enabled: ${app.storage.s3.enabled:false}
   jpa:
     hibernate:
       ddl-auto: update

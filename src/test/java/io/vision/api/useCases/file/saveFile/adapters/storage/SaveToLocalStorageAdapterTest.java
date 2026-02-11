@@ -83,6 +83,6 @@ class SaveToLocalStorageAdapterTest {
     // When & Then
     assertThatThrownBy(() -> saveToLocalStorageAdapter.operate(inputStream, subPath, filename))
         .isInstanceOf(RuntimeException.class)
-        .hasMessageContaining("Cannot store file outside current directory");
+        .hasMessageContaining("허용되지 않은 상위 디렉토리 접근 시도");
   }
 }
