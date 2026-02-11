@@ -43,7 +43,7 @@ public class UserEntity extends AuditEntity {
   @Enumerated(EnumType.STRING)
   private Role role;
 
-  @Column(comment = "사용자 refresh 토큰")
+  @Column(length = 1000, comment = "사용자 refresh 토큰")
   private String refreshToken;
 
   public UserEntity(String email, String password, String displayName, Role role, String refreshToken) {

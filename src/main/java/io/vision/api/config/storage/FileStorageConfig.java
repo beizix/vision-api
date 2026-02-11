@@ -6,12 +6,14 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @Slf4j
+@ConditionalOnProperty(name = "app.storage.local.enabled", havingValue = "true", matchIfMissing = true)
 public class FileStorageConfig implements WebMvcConfigurer {
 
   @Value("${app.upload.path:#{null}}")

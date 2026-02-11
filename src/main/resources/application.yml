@@ -41,3 +41,11 @@ jwt:
   secret: v-api-secret-key-for-local-development-only-2026
   access-token-validity: 3600000        # 1시간
   refresh-token-validity: 86400000      # 24시간
+
+# 애플리케이션 커스텀 설정
+app:
+  storage:
+    local:
+      enabled: true
+    s3:
+      enabled: false

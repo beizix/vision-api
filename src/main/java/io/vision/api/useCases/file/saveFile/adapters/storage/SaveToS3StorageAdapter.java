@@ -8,11 +8,13 @@ import java.io.InputStream;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @Component
 @RequiredArgsConstructor
+@ConditionalOnProperty(name = "app.storage.s3.enabled", havingValue = "true")
 public class SaveToS3StorageAdapter implements SaveToFileStorage {
   private final S3Template s3Template;
 
