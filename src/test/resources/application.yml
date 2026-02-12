@@ -25,3 +25,4 @@ app:
     path: ${java.io.tmpdir}/vision-test-uploads
   logging:
     path: logs
+  timezone: Asia/Seoul

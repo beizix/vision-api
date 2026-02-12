@@ -45,3 +45,4 @@ app:
       enabled: false
   logging:
     path: logs
+  timezone: Asia/Seoul
