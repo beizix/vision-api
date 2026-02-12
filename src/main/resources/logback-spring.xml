@@ -2,6 +2,7 @@
 <configuration>
     <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
     
+    <!-- springProperty의 defaultValue를 명시하여 주입 실패 시에도 기본 경로 확보 -->
     <springProperty scope="context" name="LOG_FILE_PATH" source="app.logging.path"/>
     <property name="LOG_FILE_NAME" value="application"/>
 
@@ -13,7 +14,7 @@
         </encoder>
     </appender>
 
-    <!-- File Appender -->
+    <!-- File Appender: 정의 자체는 전역으로 하되, 사용 여부만 프로파일로 제어 -->
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_FILE_PATH}/${LOG_FILE_NAME}.log</file>
         <encoder>
@@ -21,27 +22,30 @@
             <charset>utf8</charset>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <!-- 파일 이름 패턴: logs/application.2026-02-12.0.log.gz -->
             <fileNamePattern>${LOG_FILE_PATH}/archived/${LOG_FILE_NAME}.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
-            <!-- 로그 파일당 최대 크기 -->
             <maxFileSize>10MB</maxFileSize>
-            <!-- 로그 보관 기간 (일 단위) -->
             <maxHistory>30</maxHistory>
-            <!-- 전체 로그 파일 총 크기 제한 -->
             <totalSizeCap>1GB</totalSizeCap>
         </rollingPolicy>
     </appender>
 
-    <!-- Profile별 설정 -->
+    <!-- Local 프로파일: 콘솔 + 파일 모두 출력 -->
     <springProfile name="local">
         <root level="INFO">
             <appender-ref ref="CONSOLE"/>
         </root>
-        <!-- 패키지별 로그 레벨 설정 예시 -->
         <logger name="io.vision.api" level="DEBUG"/>
     </springProfile>
 
-    <springProfile name="!local">
+    <!-- Test 프로파일: 콘솔만 출력 (파일 경로는 yml에서 temp로 우회됨) -->
+    <springProfile name="test">
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+    </springProfile>
+
+    <!-- 기본(Default) 또는 운영 환경 -->
+    <springProfile name="default, prod, dev">
         <root level="INFO">
             <appender-ref ref="CONSOLE"/>
             <appender-ref ref="FILE"/>

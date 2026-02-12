@@ -23,8 +23,9 @@ public class GetS3FileURLAdapter implements GetFileURL {
 
   @Override
   public String operate(String path, String filename) {
-    return UriComponentsBuilder.fromPath("https://")
-        .path("/" + cloudFrontDomain)
+    return UriComponentsBuilder.newInstance()
+        .scheme("https")
+        .host(cloudFrontDomain)
         .path("/" + bucketFolder)
         .path("/" + path)
         .path("/" + filename)
