@@ -1,56 +1,73 @@
 # Vision API
 
-모두를 위한 Vision API 프로젝트입니다.
+Vision API는 효율적인 파일 관리와 안전한 사용자 인증을 제공하는 백엔드 서비스입니다. 헥사고날 아키텍처(Hexagonal Architecture)와 Outside-In TDD(London School) 방식을 채택하여 높은 유지보수성과 테스트 신뢰도를 보장합니다.
+
+## 🌟 주요 기능
+
+-   **파일 스토리지 관리**: 로컬 파일 시스템 및 AWS S3 멀티 스토리지 지원
+-   **사용자 인증 및 권한 관리**: Spring Security와 JWT를 이용한 보안 강화
+-   **RESTful API**: 표준화된 API 인터페이스 제공
+-   **강력한 유효성 검사**: Apache Tika를 활용한 파일 MIME-Type 검증
+
+## 🛠 기술 스택
+
+-   **Framework**: Spring Boot 4.0.1
+-   **Language**: Java 21
+-   **Architecture**: Hexagonal Architecture
+-   **Database**: H2 (Default), JPA/Hibernate를 지원하는 모든 RDBMS와 연동 가능
+-   **Storage**: Local File System, AWS S3 (Object Storage)
+-   **Testing**: JUnit 5, Mockito, AssertJ (TDD)
+-   **Build Tool**: Gradle
+
+---
 
 ## 🚀 개발 및 실행 가이드
 
-이 프로젝트는 Gradle Wrapper(`gradlew`)를 사용하여 빌드 및 실행을 관리합니다.
-
 ### 1. 애플리케이션 실행
-로컬 환경에서 애플리케이션을 구동하려면 아래 명령어를 실행하세요.
-```bash
-./gradlew bootRun
+- **IDE 구동**: `io.vision.api.VisionApplication` 클래스의 `main` 메서드를 실행합니다.
+
+### 2. H2 데이터베이스 접속
+-   **JDBC URL**: `jdbc:h2:file:~/h2/vision/vision;AUTO_SERVER=TRUE`
+-   **User**: `sa` / **Password**: (없음)
+
+## 📂 프로젝트 구조 및 문서 가이드
+
+### 1. 주요 가이드 문서
+애플리케이션 구동 및 개발 전 아래 문서들을 반드시 확인해 주세요.
+-   **[필수 설정 가이드](./docs/configuration.md)**: 구동을 위해 반드시 필요한 `jwt.secret` 등 환경 변수 및 프로퍼티 설정 방법 안내
+-   **[도메인 용어 사전](./docs/domain-glossary.md)**: 프로젝트에서 사용하는 핵심 비즈니스 용어 정의
+-   **[에러 핸들링 가이드](./docs/error-handling.md)**: 공통 에러 응답 규격 및 예외 처리 전략
+-   **[테스트 전략](./docs/test-strategy.md)**: Outside-In TDD 접근 방식 및 계층별 테스트 원칙
+
+### 2. 프로젝트 구조 (Hexagonal Architecture)
+```
+io.vision.api/
+|-- common        # 공통 도메인, 엔티티, 리포지토리
+`-- useCases      # 유스케이스 기반 도메인 로직
+    |-- auth      # 인증 (Login, Signup, JWT)
+    `-- file      # 파일 처리 (Save, GetURL)
 ```
 
-### 2. 테스트 실행
+상세한 아키텍처 결정 사항(ADR) 등은 [docs](./docs/) 디렉토리에서 확인할 수 있습니다.
+
+### 3. API 문서 (Swagger)
+애플리케이션 구동 후 아래 주소를 통해 대화형 API 문서를 확인할 수 있습니다.
+-   **Swagger UI**: /swagger-ui/index.html
+
+## 테스트 실행
 
 #### 전체 테스트 실행
-모든 테스트 코드를 실행하고 결과를 확인합니다.
 ```bash
 ./gradlew test
 ```
 
-#### 특정 테스트 케이스만 실행
-특정 클래스 또는 메서드만 지정하여 테스트를 실행할 수 있습니다.
+#### 특정 테스트 케이스 실행
 ```bash
-# 특정 테스트 클래스 실행
 ./gradlew test --tests io.vision.api.config.security.SecurityConfigTest
-
-# 특정 패키지의 모든 테스트 실행
-./gradlew test --tests io.vision.api.useCases.signup.*
-
-# 특정 테스트 메서드 실행
-./gradlew test --tests io.vision.api.config.security.SecurityConfigTest.access_public_endpoint_success
 ```
 
-### 3. 코드 스타일 관리 (Spotless)
-이 프로젝트는 Google Java Format을 준수합니다.
-
-#### 코드 자동 포맷팅 적용
-작성한 코드를 프로젝트 규칙에 맞게 자동으로 정돈합니다. 커밋 전에 실행하는 것을 권장합니다.
+##  코드 스타일 관리 (Spotless)
+이 프로젝트는 Google Java Format을 준수하며 Spotless를 통해 코드 스타일을 강제합니다.
 ```bash
 ./gradlew spotlessApply
 ```
-
-#### 포맷팅 규칙 준수 확인
-코드를 수정하지 않고 규칙 위반 여부만 체크합니다.
-```bash
-./gradlew spotlessCheck
-```
-
-### 4. H2 데이터베이스 접속 (외부 클라이언트)
-애플리케이션 구동 시 `~/h2/vision` 경로에 데이터베이스 파일이 자동으로 생성됩니다. 외부 DB 클라이언트(IntelliJ, DBeaver 등)를 사용하여 접속할 수 있습니다.
-
-- **JDBC URL**: `jdbc:h2:file:~/h2/vision/vision;AUTO_SERVER=TRUE`
-- **User**: `sa`
-- **Password**: (없음)

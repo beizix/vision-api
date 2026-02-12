@@ -1,9 +1,10 @@
 package io.vision.api.useCases.file.saveFile.application.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import java.util.Set;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+
+import java.util.Set;
 
 @Getter
 @RequiredArgsConstructor
@@ -15,8 +16,6 @@ public enum FileUploadType {
   private final FileStorageType fileStorageType;
   private final String subPath;
   private final Set<AcceptableFileType> acceptableFileTypes;
-
-  private String name;
 
   public String getName() {
     return name();
