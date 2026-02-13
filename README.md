@@ -34,7 +34,7 @@ School) 방식을 채택하여 높은 유지보수성과 테스트 신뢰도를 
 - **IDE 구동**: `io.dough.api.DoughApplication` 클래스의 `main` 메서드를 실행합니다.
 
 ### 2. H2 데이터베이스 접속
--   **JDBC URL**: `jdbc:h2:file:~/h2/vision/vision;AUTO_SERVER=TRUE`
+-   **JDBC URL**: `jdbc:h2:file:~/h2/dough/dough-api;AUTO_SERVER=TRUE`
 -   **User**: `sa` / **Password**: (없음)
 
 ## 📂 프로젝트 구조 및 문서 가이드

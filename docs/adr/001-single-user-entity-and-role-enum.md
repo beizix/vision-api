@@ -2,7 +2,7 @@
 
 * **상태**: 승인됨 (Accepted)
 * **날짜**: 2026-01-17
-* **작성자**: Vision API Team
+* **작성자**: Dough API Team
 
 ## 배경 (Context)
 

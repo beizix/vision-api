@@ -1,6 +1,6 @@
 # Configuration Guide
 
-이 문서는 Vision API 프로젝트의 주요 설정 항목과 환경 구성 방법을 설명합니다.
+이 문서는 Dough API 프로젝트의 주요 설정 항목과 환경 구성 방법을 설명합니다.
 
 ## 1. 인증 및 JWT 설정 (Security & JWT)
 
@@ -24,7 +24,7 @@
 
 로컬 개발 환경에서는 별도의 설치 없이 H2 인메모리 또는 파일 기반 데이터베이스를 사용합니다.
 
-- **JDBC URL**: `jdbc:h2:file:~/h2/vision/vision;AUTO_SERVER=TRUE`
+- **JDBC URL**: `jdbc:h2:file:~/h2/dough/dough-api;AUTO_SERVER=TRUE`
 - **Driver**: `org.h2.Driver`
 - **Username**: `sa`
 - **Password**: (없음)

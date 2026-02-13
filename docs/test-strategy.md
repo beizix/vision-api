@@ -1,6 +1,6 @@
 # Test Strategy Guide
 
-이 문서는 Vision API 프로젝트의 테스트 전략과 계층별 테스트 작성 방법을 설명합니다.
+이 문서는 Dough API 프로젝트의 테스트 전략과 계층별 테스트 작성 방법을 설명합니다.
 
 ## 1. 개요 (Overview)
 

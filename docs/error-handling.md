@@ -1,6 +1,6 @@
 # Error Handling Guide
 
-이 문서는 Vision API 프로젝트의 공통 예외 처리 방식과 응답 스펙을 설명합니다.
+이 문서는 Dough API 프로젝트의 공통 예외 처리 방식과 응답 스펙을 설명합니다.
 
 ## 1. 개요 (Overview)
 

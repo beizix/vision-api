@@ -1,9 +1,9 @@
 spring:
   application:
-    name: vision
+    name: dough-api
   # 데이터베이스 설정
   datasource:
-    url: jdbc:h2:file:~/h2/vision/vision;AUTO_SERVER=TRUE
+    url: jdbc:h2:file:~/h2/dough/dough-api;AUTO_SERVER=TRUE
     driver-class-name: org.h2.Driver
     username: sa
     password:
