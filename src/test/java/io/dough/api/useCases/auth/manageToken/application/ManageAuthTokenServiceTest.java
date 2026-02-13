@@ -22,7 +22,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-class AuthTokenServiceTest {
+class ManageAuthTokenServiceTest {
 
   private ManageAuthTokenService authTokenService;
   private RefreshAuthToken refreshAuthToken;
