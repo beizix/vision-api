@@ -13,6 +13,8 @@ import io.dough.api.support.WebMvcTestBase;
 import io.dough.api.useCases.user.getUser.application.GetUserUseCase;
 import io.dough.api.useCases.user.getUser.application.domain.model.GetUserCmd;
 import io.dough.api.useCases.user.getUser.application.domain.model.UserDetail;
+
+import java.time.LocalDateTime;
 import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -35,7 +37,8 @@ class GetUserWebAdapterTest extends WebMvcTestBase {
         userId,
         email,
         "Test User",
-        Role.USER);
+        Role.USER,
+        LocalDateTime.now());
 
     given(getUserUseCase.operate(any(GetUserCmd.class)))
         .willReturn(expectedUser);
@@ -48,7 +51,8 @@ class GetUserWebAdapterTest extends WebMvcTestBase {
         .andExpect(jsonPath("$.id").value(userId.toString()))
         .andExpect(jsonPath("$.email").value(email))
         .andExpect(jsonPath("$.displayName").value("Test User"))
-        .andExpect(jsonPath("$.role").value("USER"));
+        .andExpect(jsonPath("$.role").value("USER"))
+        .andExpect(jsonPath("$.createdAt").exists());
 
     verify(getUserUseCase).operate(any(GetUserCmd.class));
   }

@@ -23,6 +23,7 @@ public class LoadUserPersistAdapter implements LoadUser {
         entity.getId(),
         entity.getEmail(),
         entity.getDisplayName(),
-        entity.getRole());
+        entity.getRole(),
+        entity.getCreatedAt());
   }
 }

@@ -31,7 +31,8 @@ class GetUserServiceTest {
     // Given
     UUID userId = UUID.randomUUID();
     GetUserCmd cmd = new GetUserCmd(userId);
-    UserDetail expectedUser = new UserDetail(userId, "test@example.com", "Test User", Role.USER);
+    UserDetail expectedUser = new UserDetail(userId, "test@example.com", "Test User", Role.USER,
+        java.time.LocalDateTime.now());
 
     given(loadUser.operate(userId)).willReturn(expectedUser);
 

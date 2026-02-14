@@ -40,5 +40,6 @@ class LoadUserPersistAdapterTest extends DataJpaTestBase {
     assertThat(result.email()).isEqualTo("test@example.com");
     assertThat(result.displayName()).isEqualTo("Test User");
     assertThat(result.role()).isEqualTo(Role.USER);
+    assertThat(result.createdAt()).isNotNull();
   }
 }

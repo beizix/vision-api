@@ -36,7 +36,8 @@ public class GetUserWebAdapter {
         result.id(),
         result.email(),
         result.displayName(),
-        result.role());
+        result.role(),
+        result.createdAt());
 
     return ResponseEntity.ok(response);
   }
