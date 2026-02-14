@@ -38,7 +38,8 @@ class GetUserWebAdapterTest extends WebMvcTestBase {
         email,
         "Test User",
         Role.USER,
-        LocalDateTime.now());
+        LocalDateTime.now(),
+        null);
 
     given(getUserUseCase.operate(any(GetUserCmd.class)))
         .willReturn(expectedUser);

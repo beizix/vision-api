@@ -8,5 +8,6 @@ public record GetUserResponse(
         String email,
         String displayName,
         Role role,
-        java.time.LocalDateTime createdAt) {
+        java.time.LocalDateTime createdAt,
+        UUID profileImageId) {
 }

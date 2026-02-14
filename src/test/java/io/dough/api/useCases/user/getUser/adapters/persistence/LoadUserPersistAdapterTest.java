@@ -41,5 +41,6 @@ class LoadUserPersistAdapterTest extends DataJpaTestBase {
     assertThat(result.displayName()).isEqualTo("Test User");
     assertThat(result.role()).isEqualTo(Role.USER);
     assertThat(result.createdAt()).isNotNull();
+    assertThat(result.profileImageId()).isNull();
   }
 }

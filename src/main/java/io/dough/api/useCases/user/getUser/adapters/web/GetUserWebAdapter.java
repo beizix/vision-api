@@ -37,7 +37,8 @@ public class GetUserWebAdapter {
         result.email(),
         result.displayName(),
         result.role(),
-        result.createdAt());
+        result.createdAt(),
+        result.profileImageId());
 
     return ResponseEntity.ok(response);
   }

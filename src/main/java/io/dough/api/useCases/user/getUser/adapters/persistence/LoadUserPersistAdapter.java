@@ -7,6 +7,7 @@ import io.dough.api.useCases.user.getUser.application.domain.model.UserDetail;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @RequiredArgsConstructor
@@ -15,6 +16,7 @@ public class LoadUserPersistAdapter implements LoadUser {
   private final UserRepository userRepository;
 
   @Override
+  @Transactional(readOnly = true)
   public UserDetail operate(UUID userId) {
     UserEntity entity = userRepository.findById(userId)
         .orElseThrow(() -> new IllegalArgumentException("User not found"));
@@ -24,6 +26,7 @@ public class LoadUserPersistAdapter implements LoadUser {
         entity.getEmail(),
         entity.getDisplayName(),
         entity.getRole(),
-        entity.getCreatedAt());
+        entity.getCreatedAt(),
+        entity.getProfileImage() != null ? entity.getProfileImage().getId() : null);
   }
 }

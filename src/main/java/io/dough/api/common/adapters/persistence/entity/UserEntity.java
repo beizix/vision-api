@@ -9,6 +9,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.util.UUID;
 import lombok.AccessLevel;
@@ -45,6 +47,10 @@ public class UserEntity extends AuditEntity {
 
   @Column(length = 1000, comment = "사용자 refresh 토큰")
   private String refreshToken;
+
+  @ManyToOne(fetch = jakarta.persistence.FetchType.LAZY)
+  @JoinColumn(name = "profile_image_id", comment = "프로필 이미지 ID")
+  private FileMetadataEntity profileImage;
 
   public UserEntity(
       String email, String password, String displayName, Role role, String refreshToken) {
