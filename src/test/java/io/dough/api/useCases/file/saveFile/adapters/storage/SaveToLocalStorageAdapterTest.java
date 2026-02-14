@@ -2,7 +2,12 @@ package io.dough.api.useCases.file.saveFile.adapters.storage;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
+import io.dough.api.common.application.utils.MessageUtils;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,19 +18,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.springframework.test.util.ReflectionTestUtils;
-import io.dough.api.common.application.utils.MessageUtils;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 
 class SaveToLocalStorageAdapterTest {
 
   private SaveToLocalStorageAdapter saveToLocalStorageAdapter;
   private MessageUtils messageUtils;
 
-  @TempDir
-  Path tempDir;
+  @TempDir Path tempDir;
 
   @BeforeEach
   void setUp() {
@@ -87,7 +86,8 @@ class SaveToLocalStorageAdapterTest {
     String filename = "../../../etc/passwd";
 
     String errorMessage = "허용되지 않은 상위 디렉토리 접근 시도";
-    when(messageUtils.getMessage(eq("exception.file.path_traversal"), any(Object[].class))).thenReturn(errorMessage);
+    when(messageUtils.getMessage(eq("exception.file.path_traversal"), any(Object[].class)))
+        .thenReturn(errorMessage);
 
     // When & Then
     assertThatThrownBy(() -> saveToLocalStorageAdapter.operate(inputStream, subPath, filename))

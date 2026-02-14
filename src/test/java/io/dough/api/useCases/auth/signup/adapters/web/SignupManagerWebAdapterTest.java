@@ -27,7 +27,8 @@ class SignupManagerWebAdapterTest extends WebMvcTestBase {
   @DisplayName("Scenario: 성공 - 유효한 관리자 가입 요청시 200 OK를 반환한다")
   void signup_manager_success() throws Exception {
     // Given
-    SignupManagerRequest req = new SignupManagerRequest("manager@dough.io", "password", "Manager User");
+    SignupManagerRequest req =
+        new SignupManagerRequest("manager@dough.io", "password", "Manager User");
     AuthToken mockToken = new AuthToken("access-token", "refresh-token");
     when(signupUseCase.operate(any(SignupCmd.class))).thenReturn(mockToken);
 

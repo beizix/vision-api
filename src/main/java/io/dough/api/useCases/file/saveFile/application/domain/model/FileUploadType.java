@@ -1,10 +1,9 @@
 package io.dough.api.useCases.file.saveFile.application.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import java.util.Set;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-
-import java.util.Set;
 
 @Getter
 @RequiredArgsConstructor

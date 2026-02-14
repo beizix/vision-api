@@ -5,15 +5,15 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
 import io.dough.api.common.application.enums.Role;
+import io.dough.api.common.application.utils.MessageUtils;
 import io.dough.api.useCases.auth.manageToken.application.domain.ManageAuthTokenService;
 import io.dough.api.useCases.auth.manageToken.application.domain.model.AuthToken;
 import io.dough.api.useCases.auth.manageToken.application.domain.model.CreateTokenCmd;
 import io.dough.api.useCases.auth.manageToken.application.domain.model.RefreshTokenCmd;
-import io.dough.api.common.application.utils.MessageUtils;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
@@ -38,8 +38,9 @@ class ManageAuthTokenServiceTest {
   void setUp() {
     refreshAuthToken = mock(RefreshAuthToken.class);
     messageUtils = mock(MessageUtils.class);
-    authTokenService = new ManageAuthTokenService(secret, accessValidity, refreshValidity, refreshAuthToken,
-        messageUtils);
+    authTokenService =
+        new ManageAuthTokenService(
+            secret, accessValidity, refreshValidity, refreshAuthToken, messageUtils);
     secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
   }
 
@@ -69,13 +70,15 @@ class ManageAuthTokenServiceTest {
     AuthToken originalToken = authTokenService.createToken(createCmd);
 
     when(refreshAuthToken.get(originalToken.refreshToken()))
-        .thenReturn(Optional.of(new RefreshAuthToken.RefreshUser(uuid, email, "Manager User", role)));
+        .thenReturn(
+            Optional.of(new RefreshAuthToken.RefreshUser(uuid, email, "Manager User", role)));
 
     // Ensure tokens have different timestamps
     Thread.sleep(1001);
 
     // When
-    AuthToken refreshedToken = authTokenService.refreshToken(new RefreshTokenCmd(originalToken.refreshToken()));
+    AuthToken refreshedToken =
+        authTokenService.refreshToken(new RefreshTokenCmd(originalToken.refreshToken()));
 
     // Then
     assertThat(refreshedToken.accessToken()).isNotEqualTo(originalToken.accessToken());
@@ -95,14 +98,16 @@ class ManageAuthTokenServiceTest {
         IllegalArgumentException.class,
         () -> {
           authTokenService.refreshToken(new RefreshTokenCmd(token));
-        }, errorMessage);
+        },
+        errorMessage);
   }
 
   @Test
   @DisplayName("Scenario: 성공 - 유효한 토큰 검증 시 true를 반환한다")
   void validate_token_success() {
     // Given
-    CreateTokenCmd cmd = new CreateTokenCmd(UUID.randomUUID(), "test@example.com", "Test User", Role.USER);
+    CreateTokenCmd cmd =
+        new CreateTokenCmd(UUID.randomUUID(), "test@example.com", "Test User", Role.USER);
     AuthToken token = authTokenService.createToken(cmd);
     String accessToken = token.accessToken();
 
@@ -155,7 +160,8 @@ class ManageAuthTokenServiceTest {
 
     // Then
     String accessToken = authToken.accessToken();
-    Claims claims = Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(accessToken).getPayload();
+    Claims claims =
+        Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(accessToken).getPayload();
 
     assertThat(claims.getSubject()).isEqualTo(uuid.toString());
     assertThat(claims.get("email", String.class)).isEqualTo(email);
@@ -208,7 +214,8 @@ class ManageAuthTokenServiceTest {
 
     // Then
     String accessToken = authToken.accessToken();
-    Claims claims = Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(accessToken).getPayload();
+    Claims claims =
+        Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(accessToken).getPayload();
 
     @SuppressWarnings("unchecked")
     List<String> extractedPrivileges = claims.get("privileges", List.class);

@@ -27,20 +27,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @ExtendWith(MockitoExtension.class)
 class SignupServiceTest {
 
-  @InjectMocks
-  private SignupService signupService;
+  @InjectMocks private SignupService signupService;
 
-  @Mock
-  private ManageSignup manageSignup;
+  @Mock private ManageSignup manageSignup;
 
-  @Mock
-  private PasswordEncoder passwordEncoder;
+  @Mock private PasswordEncoder passwordEncoder;
 
-  @Mock
-  private ManageAuthTokenUseCase manageAuthTokenUseCase;
+  @Mock private ManageAuthTokenUseCase manageAuthTokenUseCase;
 
-  @Mock
-  private MessageUtils messageUtils;
+  @Mock private MessageUtils messageUtils;
 
   @Test
   @DisplayName("Scenario: 성공 - 정상적인 회원가입 요청 시 사용자를 저장하고 토큰을 발급한다")
@@ -50,10 +45,17 @@ class SignupServiceTest {
 
     given(manageSignup.existsByEmailAndRole(cmd.email(), cmd.role())).willReturn(false);
     given(passwordEncoder.encode(cmd.password())).willReturn("encodedPassword");
-    given(manageSignup.save(any(SignupUser.class))).willAnswer(invocation -> {
-      SignupUser user = invocation.getArgument(0);
-      return new SignupUser(UUID.randomUUID(), user.email(), user.password(), user.displayName(), user.role());
-    });
+    given(manageSignup.save(any(SignupUser.class)))
+        .willAnswer(
+            invocation -> {
+              SignupUser user = invocation.getArgument(0);
+              return new SignupUser(
+                  UUID.randomUUID(),
+                  user.email(),
+                  user.password(),
+                  user.displayName(),
+                  user.role());
+            });
     given(manageAuthTokenUseCase.createToken(any(CreateTokenCmd.class)))
         .willReturn(new AuthToken("access", "refresh"));
 
@@ -64,13 +66,19 @@ class SignupServiceTest {
     assertThat(token).isNotNull();
     assertThat(token.accessToken()).isEqualTo("access");
 
-    verify(manageSignup).save(argThat(user -> user.email().equals(cmd.email())
-        && user.password().equals("encodedPassword")
-        && user.displayName().equals(cmd.displayName())
-        && user.role().equals(cmd.role())));
+    verify(manageSignup)
+        .save(
+            argThat(
+                user ->
+                    user.email().equals(cmd.email())
+                        && user.password().equals("encodedPassword")
+                        && user.displayName().equals(cmd.displayName())
+                        && user.role().equals(cmd.role())));
 
-    verify(manageAuthTokenUseCase).createToken(argThat(authCmd -> authCmd.email().equals(cmd.email())
-        && authCmd.role() == cmd.role()));
+    verify(manageAuthTokenUseCase)
+        .createToken(
+            argThat(
+                authCmd -> authCmd.email().equals(cmd.email()) && authCmd.role() == cmd.role()));
   }
 
   @Test

@@ -26,7 +26,7 @@ public class LoginManagerWebAdapter {
   @ApiResponse(responseCode = "200", description = "로그인 성공")
   @PostMapping("/api/v1/auth/login/manager")
   public LoginResponse operate(
-    @RequestBody @Parameter(description = "로그인 요청", required = true) LoginRequest req) {
+      @RequestBody @Parameter(description = "로그인 요청", required = true) LoginRequest req) {
     AuthToken token = loginUseCase.operate(new LoginCmd(req.email(), req.password(), Role.MANAGER));
     return new LoginResponse(token.accessToken(), token.refreshToken());
   }

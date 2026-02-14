@@ -25,8 +25,7 @@ class JwtAuthenticationFilterTest {
 
   private JwtAuthenticationFilter filter;
 
-  @Mock
-  private ManageAuthTokenUseCase manageAuthTokenUseCase;
+  @Mock private ManageAuthTokenUseCase manageAuthTokenUseCase;
 
   private MockHttpServletRequest request;
   private MockHttpServletResponse response;

@@ -20,7 +20,9 @@ public class RefreshAuthTokenPersistAdapter implements RefreshAuthToken {
     return userRepository
         .findByRefreshToken(refreshToken)
         .map(
-            entity -> new RefreshUser(entity.getId(), entity.getEmail(), entity.getDisplayName(), entity.getRole()));
+            entity ->
+                new RefreshUser(
+                    entity.getId(), entity.getEmail(), entity.getDisplayName(), entity.getRole()));
   }
 
   @Override

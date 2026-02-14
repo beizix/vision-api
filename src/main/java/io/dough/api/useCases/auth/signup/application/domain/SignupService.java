@@ -1,5 +1,6 @@
 package io.dough.api.useCases.auth.signup.application.domain;
 
+import io.dough.api.common.application.utils.MessageUtils;
 import io.dough.api.useCases.auth.manageToken.application.ManageAuthTokenUseCase;
 import io.dough.api.useCases.auth.manageToken.application.domain.model.AuthToken;
 import io.dough.api.useCases.auth.manageToken.application.domain.model.CreateTokenCmd;
@@ -10,7 +11,6 @@ import io.dough.api.useCases.auth.signup.application.domain.model.SignupUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import io.dough.api.common.application.utils.MessageUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -26,15 +26,18 @@ public class SignupService implements SignupUseCase {
   @Transactional
   public AuthToken operate(SignupCmd cmd) {
     if (manageSignup.existsByEmailAndRole(cmd.email(), cmd.role())) {
-      throw new IllegalArgumentException(messageUtils.getMessage("exception.auth.email_already_exists"));
+      throw new IllegalArgumentException(
+          messageUtils.getMessage("exception.auth.email_already_exists"));
     }
 
     String encodedPassword = passwordEncoder.encode(cmd.password());
-    SignupUser user = new SignupUser(null, cmd.email(), encodedPassword, cmd.displayName(), cmd.role());
+    SignupUser user =
+        new SignupUser(null, cmd.email(), encodedPassword, cmd.displayName(), cmd.role());
 
     SignupUser savedUser = manageSignup.save(user);
 
     return manageAuthTokenUseCase.createToken(
-        new CreateTokenCmd(savedUser.id(), savedUser.email(), savedUser.displayName(), savedUser.role()));
+        new CreateTokenCmd(
+            savedUser.id(), savedUser.email(), savedUser.displayName(), savedUser.role()));
   }
 }

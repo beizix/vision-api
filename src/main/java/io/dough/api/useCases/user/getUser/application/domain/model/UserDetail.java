@@ -4,10 +4,9 @@ import io.dough.api.common.application.enums.Role;
 import java.util.UUID;
 
 public record UserDetail(
-        UUID id,
-        String email,
-        String displayName,
-        Role role,
-        java.time.LocalDateTime createdAt,
-        UUID profileImageId) {
-}
+    UUID id,
+    String email,
+    String displayName,
+    Role role,
+    java.time.LocalDateTime createdAt,
+    String profileImageUrl) {}

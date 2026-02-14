@@ -1,14 +1,14 @@
 package io.dough.api.useCases.auth.manageToken.application.domain;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
+import io.dough.api.common.application.utils.MessageUtils;
 import io.dough.api.useCases.auth.manageToken.application.ManageAuthTokenUseCase;
 import io.dough.api.useCases.auth.manageToken.application.RefreshAuthToken;
 import io.dough.api.useCases.auth.manageToken.application.domain.model.AuthToken;
 import io.dough.api.useCases.auth.manageToken.application.domain.model.CreateTokenCmd;
 import io.dough.api.useCases.auth.manageToken.application.domain.model.RefreshTokenCmd;
-import io.dough.api.common.application.utils.MessageUtils;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import javax.crypto.SecretKey;
@@ -43,10 +43,22 @@ public class ManageAuthTokenService implements ManageAuthTokenUseCase {
   public AuthToken createToken(CreateTokenCmd cmd) {
     var role = cmd.role().getAuthority();
     var privileges = cmd.role().getPrivileges().stream().map(Enum::name).distinct().toList();
-    String accessToken = createToken(cmd.uuid().toString(), cmd.email(), cmd.displayName(), role, privileges,
-        accessTokenValidity);
-    String refreshToken = createToken(cmd.uuid().toString(), cmd.email(), cmd.displayName(), role, privileges,
-        refreshTokenValidity);
+    String accessToken =
+        createToken(
+            cmd.uuid().toString(),
+            cmd.email(),
+            cmd.displayName(),
+            role,
+            privileges,
+            accessTokenValidity);
+    String refreshToken =
+        createToken(
+            cmd.uuid().toString(),
+            cmd.email(),
+            cmd.displayName(),
+            role,
+            privileges,
+            refreshTokenValidity);
 
     refreshAuthToken.save(cmd.uuid(), refreshToken);
 
@@ -72,13 +84,20 @@ public class ManageAuthTokenService implements ManageAuthTokenUseCase {
       return refreshAuthToken
           .get(cmd.refreshToken())
           .map(
-              refreshUser -> createToken(
-                  new CreateTokenCmd(
-                      refreshUser.uuid(), refreshUser.email(), refreshUser.displayName(), refreshUser.role())))
+              refreshUser ->
+                  createToken(
+                      new CreateTokenCmd(
+                          refreshUser.uuid(),
+                          refreshUser.email(),
+                          refreshUser.displayName(),
+                          refreshUser.role())))
           .orElseThrow(
-              () -> new IllegalArgumentException(messageUtils.getMessage("exception.auth.invalid_refresh_token")));
+              () ->
+                  new IllegalArgumentException(
+                      messageUtils.getMessage("exception.auth.invalid_refresh_token")));
     } catch (Exception e) {
-      throw new IllegalArgumentException(messageUtils.getMessage("exception.auth.invalid_refresh_token"), e);
+      throw new IllegalArgumentException(
+          messageUtils.getMessage("exception.auth.invalid_refresh_token"), e);
     }
   }
 
@@ -87,7 +106,8 @@ public class ManageAuthTokenService implements ManageAuthTokenUseCase {
     try {
       return parseClaims(token).getSubject();
     } catch (Exception e) {
-      throw new IllegalArgumentException(messageUtils.getMessage("exception.auth.invalid_token"), e);
+      throw new IllegalArgumentException(
+          messageUtils.getMessage("exception.auth.invalid_token"), e);
     }
   }
 
@@ -97,7 +117,8 @@ public class ManageAuthTokenService implements ManageAuthTokenUseCase {
       Claims claims = parseClaims(token);
       return claims.get("displayName", String.class);
     } catch (Exception e) {
-      throw new IllegalArgumentException(messageUtils.getMessage("exception.auth.invalid_token"), e);
+      throw new IllegalArgumentException(
+          messageUtils.getMessage("exception.auth.invalid_token"), e);
     }
   }
 
@@ -107,7 +128,8 @@ public class ManageAuthTokenService implements ManageAuthTokenUseCase {
       Claims claims = parseClaims(token);
       return claims.get("email", String.class);
     } catch (Exception e) {
-      throw new IllegalArgumentException(messageUtils.getMessage("exception.auth.invalid_token"), e);
+      throw new IllegalArgumentException(
+          messageUtils.getMessage("exception.auth.invalid_token"), e);
     }
   }
 

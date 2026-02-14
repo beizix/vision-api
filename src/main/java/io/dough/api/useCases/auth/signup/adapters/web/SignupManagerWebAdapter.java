@@ -1,16 +1,16 @@
 package io.dough.api.useCases.auth.signup.adapters.web;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import io.dough.api.common.application.enums.Role;
 import io.dough.api.useCases.auth.manageToken.application.domain.model.AuthToken;
 import io.dough.api.useCases.auth.signup.adapters.web.model.SignupManagerRequest;
 import io.dough.api.useCases.auth.signup.adapters.web.model.SignupResponse;
 import io.dough.api.useCases.auth.signup.application.SignupUseCase;
 import io.dough.api.useCases.auth.signup.application.domain.model.SignupCmd;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,7 +29,8 @@ public class SignupManagerWebAdapter {
   @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "가입 성공")})
   @PostMapping("/api/v1/manager/signup")
   public SignupResponse signupManager(
-      @RequestBody @Parameter(description = "관리자 가입 정보", required = true) SignupManagerRequest req) {
+      @RequestBody @Parameter(description = "관리자 가입 정보", required = true)
+          SignupManagerRequest req) {
     AuthToken token =
         signupUseCase.operate(
             new SignupCmd(req.email(), req.password(), req.displayName(), Role.MANAGER));

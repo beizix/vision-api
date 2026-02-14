@@ -31,21 +31,19 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 @WebMvcTest(UploadFileWebAdapter.class)
 class SaveFileWebAdapterTest extends WebMvcTestBase {
 
-  @MockitoBean
-  private SaveFileUseCase saveFileUseCase;
+  @MockitoBean private SaveFileUseCase saveFileUseCase;
 
-  @MockitoBean
-  private GetFileURLUseCase getFileUrlUseCase;
+  @MockitoBean private GetFileURLUseCase getFileUrlUseCase;
 
-  @MockitoBean
-  private MessageUtils messageUtils;
+  @MockitoBean private MessageUtils messageUtils;
 
   @Test
   @DisplayName("Scenario: 성공 - Multipart 파일을 업로드한다")
   void upload_multipart_success() throws Exception {
     // Given
-    MockMultipartFile file = new MockMultipartFile(
-        "file", "test.png", MediaType.IMAGE_PNG_VALUE, "test content".getBytes());
+    MockMultipartFile file =
+        new MockMultipartFile(
+            "file", "test.png", MediaType.IMAGE_PNG_VALUE, "test content".getBytes());
     FileUploadType type = FileUploadType.UPLOAD_IMG_TO_LOCAL;
     UUID fileId = UUID.randomUUID();
     SaveFile saveFile = new SaveFile(fileId, type, "/path/to/file", "saved.png", "test.png", 100L);
@@ -72,18 +70,20 @@ class SaveFileWebAdapterTest extends WebMvcTestBase {
   @DisplayName("Scenario: 성공 - Base64 데이터를 업로드한다")
   void upload_base64_success() throws Exception {
     // Given
-    String base64Data = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==";
+    String base64Data =
+        "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==";
     FileUploadType type = FileUploadType.UPLOAD_IMG_TO_LOCAL;
 
     // Enum이 @JsonFormat(Shape.OBJECT)로 설정되어 있어 objectMapper 사용 시 객체로 직렬화됨.
     // 서버의 @RequestBody 역직렬화 호환성을 위해 문자열로 직접 JSON 구성
-    String requestBody = """
+    String requestBody =
+        """
         {
           "type": "%s",
           "base64Data": "%s"
         }
         """
-        .formatted(type.name(), base64Data);
+            .formatted(type.name(), base64Data);
 
     UUID fileId = UUID.randomUUID();
     SaveFile saveFile = new SaveFile(fileId, type, "/path/to/file", "saved.png", "image.png", 100L);

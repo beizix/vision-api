@@ -32,13 +32,14 @@ public class GetUserWebAdapter {
     GetUserCmd cmd = new GetUserCmd(userId);
     UserDetail result = getUserUseCase.operate(cmd);
 
-    GetUserResponse response = new GetUserResponse(
-        result.id(),
-        result.email(),
-        result.displayName(),
-        result.role(),
-        result.createdAt(),
-        result.profileImageId());
+    GetUserResponse response =
+        new GetUserResponse(
+            result.id(),
+            result.email(),
+            result.displayName(),
+            result.role(),
+            result.createdAt(),
+            result.profileImageUrl());
 
     return ResponseEntity.ok(response);
   }

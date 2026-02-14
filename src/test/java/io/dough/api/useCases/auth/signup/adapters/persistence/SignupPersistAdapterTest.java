@@ -14,17 +14,16 @@ import org.springframework.context.annotation.Import;
 @Import(ManageSignupPersistAdapter.class)
 class SignupPersistAdapterTest extends DataJpaTestBase {
 
-  @Autowired
-  private ManageSignupPersistAdapter signupPersistAdapter;
+  @Autowired private ManageSignupPersistAdapter signupPersistAdapter;
 
-  @Autowired
-  private UserRepository userRepository;
+  @Autowired private UserRepository userRepository;
 
   @Test
   @DisplayName("Scenario: 성공 - SignupUser 모델을 저장하면 UserEntity로 변환되어 DB에 영속화된다")
   void save_user_success() {
     // Given
-    SignupUser user = new SignupUser(null, "persist@dough.io", "encodedPassword", "Persist User", Role.USER);
+    SignupUser user =
+        new SignupUser(null, "persist@dough.io", "encodedPassword", "Persist User", Role.USER);
 
     // When
     signupPersistAdapter.save(user);

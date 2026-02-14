@@ -1,27 +1,24 @@
 package io.dough.api.useCases.auth.login.adapters.persistence;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import io.dough.api.common.adapters.persistence.entity.UserEntity;
 import io.dough.api.common.adapters.persistence.repository.UserRepository;
 import io.dough.api.common.application.enums.Role;
 import io.dough.api.support.DataJpaTestBase;
 import io.dough.api.useCases.auth.login.application.domain.model.GetUserResult;
+import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
 @Import({GetUserPersistAdapter.class})
 class LoginPersistAdapterTest extends DataJpaTestBase {
 
-  @Autowired
-  private GetUserPersistAdapter loginPersistAdapter;
+  @Autowired private GetUserPersistAdapter loginPersistAdapter;
 
-  @Autowired
-  private UserRepository userRepository;
+  @Autowired private UserRepository userRepository;
 
   @Test
   @DisplayName("Scenario: 성공 - 이메일로 사용자 정보를 로드한다")

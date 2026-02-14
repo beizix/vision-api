@@ -35,7 +35,9 @@ class LoginUserWebAdapterTest extends WebMvcTestBase {
     // When
     mockMvc
         .perform(
-            post("/api/v1/auth/login/user").contentType(MediaType.APPLICATION_JSON).content(json(req)))
+            post("/api/v1/auth/login/user")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json(req)))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.accessToken").value("access_token_value"))
         .andExpect(jsonPath("$.refreshToken").value("refresh_token_value"));

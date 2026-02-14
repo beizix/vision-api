@@ -1,15 +1,15 @@
 package io.dough.api.useCases.auth.signup.adapters.web;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import io.dough.api.common.application.enums.Role;
 import io.dough.api.useCases.auth.manageToken.application.domain.model.AuthToken;
 import io.dough.api.useCases.auth.signup.adapters.web.model.SignupResponse;
 import io.dough.api.useCases.auth.signup.adapters.web.model.SignupUserRequest;
 import io.dough.api.useCases.auth.signup.application.SignupUseCase;
 import io.dough.api.useCases.auth.signup.application.domain.model.SignupCmd;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

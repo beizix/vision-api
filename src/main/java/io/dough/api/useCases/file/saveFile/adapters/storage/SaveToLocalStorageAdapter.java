@@ -18,7 +18,10 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-@ConditionalOnProperty(name = "app.storage.local.enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(
+    name = "app.storage.local.enabled",
+    havingValue = "true",
+    matchIfMissing = true)
 public class SaveToLocalStorageAdapter implements SaveToFileStorage {
   private final MessageUtils messageUtils;
 
@@ -37,12 +40,13 @@ public class SaveToLocalStorageAdapter implements SaveToFileStorage {
     Path filePath = Paths.get(localPath, createSubPath);
     Files.createDirectories(filePath);
 
-    Path destinationFile = (filePath.resolve(Paths.get(createFilename)).normalize().toAbsolutePath());
+    Path destinationFile =
+        (filePath.resolve(Paths.get(createFilename)).normalize().toAbsolutePath());
 
     // 상위 디렉토리로 이동하는 경로(Path Traversal) 시도는 차단
     if (!destinationFile.getParent().equals(filePath.toAbsolutePath())) {
       throw new IllegalArgumentException(
-          messageUtils.getMessage("exception.file.path_traversal", new Object[] { createFilename }));
+          messageUtils.getMessage("exception.file.path_traversal", new Object[] {createFilename}));
     }
 
     Files.copy(inputStream, destinationFile, StandardCopyOption.REPLACE_EXISTING);

@@ -1,9 +1,5 @@
 package io.dough.api.useCases.auth.manageToken.adapters.web;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import io.dough.api.useCases.auth.manageToken.adapters.web.model.RefreshRequest;
 import io.dough.api.useCases.auth.manageToken.adapters.web.model.RefreshResponse;
 import io.dough.api.useCases.auth.manageToken.adapters.web.model.ValidateRequest;
@@ -11,6 +7,10 @@ import io.dough.api.useCases.auth.manageToken.adapters.web.model.ValidateRespons
 import io.dough.api.useCases.auth.manageToken.application.ManageAuthTokenUseCase;
 import io.dough.api.useCases.auth.manageToken.application.domain.model.AuthToken;
 import io.dough.api.useCases.auth.manageToken.application.domain.model.RefreshTokenCmd;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
