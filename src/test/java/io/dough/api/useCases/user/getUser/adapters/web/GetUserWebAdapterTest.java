@@ -1,0 +1,54 @@
+package io.dough.api.useCases.user.getUser.adapters.web;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import io.dough.api.common.application.enums.Role;
+import io.dough.api.support.WebMvcTestBase;
+
+import io.dough.api.useCases.user.getUser.application.GetUserUseCase;
+import io.dough.api.useCases.user.getUser.application.domain.model.GetUserCmd;
+import io.dough.api.useCases.user.getUser.application.domain.model.UserDetail;
+import java.util.UUID;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+
+@WebMvcTest(GetUserWebAdapter.class)
+class GetUserWebAdapterTest extends WebMvcTestBase {
+
+  @MockitoBean
+  private GetUserUseCase getUserUseCase;
+
+  @Test
+  @DisplayName("Scenario: 성공 - 유효한 사용자 ID로 조회 시 사용자 정보를 반환한다")
+  void get_user_success() throws Exception {
+    // Given
+    UUID userId = UUID.randomUUID();
+    UserDetail expectedUser = new UserDetail(
+        userId,
+        "test@example.com",
+        "Test User",
+        Role.USER);
+
+    given(getUserUseCase.operate(any(GetUserCmd.class)))
+        .willReturn(expectedUser);
+
+    // When & Then
+    mockMvc.perform(get("/api/v1/user/{id}", userId))
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.id").value(userId.toString()))
+        .andExpect(jsonPath("$.email").value("test@example.com"))
+        .andExpect(jsonPath("$.displayName").value("Test User"))
+        .andExpect(jsonPath("$.role").value("USER"));
+
+    verify(getUserUseCase).operate(any(GetUserCmd.class));
+  }
+}
