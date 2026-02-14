@@ -24,7 +24,7 @@ class SignupPersistAdapterTest extends DataJpaTestBase {
   @DisplayName("Scenario: 성공 - SignupUser 모델을 저장하면 UserEntity로 변환되어 DB에 영속화된다")
   void save_user_success() {
     // Given
-    SignupUser user = new SignupUser(null, "persist@vision.io", "encodedPassword", "Persist User", Role.USER);
+    SignupUser user = new SignupUser(null, "persist@dough.io", "encodedPassword", "Persist User", Role.USER);
 
     // When
     signupPersistAdapter.save(user);
@@ -41,7 +41,7 @@ class SignupPersistAdapterTest extends DataJpaTestBase {
   @DisplayName("Scenario: 성공 - 존재하는 이메일과 권한 조회 시 true를 반환한다")
   void exists_by_email_and_role_true() {
     // Given
-    String email = "exists@vision.io";
+    String email = "exists@dough.io";
     signupPersistAdapter.save(new SignupUser(null, email, "pass", "User", Role.USER));
 
     // When
@@ -55,7 +55,7 @@ class SignupPersistAdapterTest extends DataJpaTestBase {
   @DisplayName("Scenario: 성공 - 존재하지 않는 이메일 조회 시 false를 반환한다")
   void exists_by_email_false() {
     // When
-    boolean exists = signupPersistAdapter.existsByEmailAndRole("notfound@vision.io", Role.USER);
+    boolean exists = signupPersistAdapter.existsByEmailAndRole("notfound@dough.io", Role.USER);
 
     // Then
     assertThat(exists).isFalse();

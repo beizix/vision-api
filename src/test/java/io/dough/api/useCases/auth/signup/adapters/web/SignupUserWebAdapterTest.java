@@ -28,7 +28,7 @@ class SignupUserWebAdapterTest extends WebMvcTestBase {
   @WithMockUser
   void signup_user_success() throws Exception {
     // Given
-    SignupUserRequest req = new SignupUserRequest("user@vision.io", "password", "User Nickname");
+    SignupUserRequest req = new SignupUserRequest("user@dough.io", "password", "User Nickname");
     given(signupUseCase.operate(any(SignupCmd.class)))
         .willReturn(new AuthToken("access", "refresh"));
 

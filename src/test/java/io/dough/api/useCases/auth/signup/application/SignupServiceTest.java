@@ -46,7 +46,7 @@ class SignupServiceTest {
   @DisplayName("Scenario: 성공 - 정상적인 회원가입 요청 시 사용자를 저장하고 토큰을 발급한다")
   void signup_success() {
     // Given
-    SignupCmd cmd = new SignupCmd("test@vision.io", "rawPassword", "Test User", Role.USER);
+    SignupCmd cmd = new SignupCmd("test@dough.io", "rawPassword", "Test User", Role.USER);
 
     given(manageSignup.existsByEmailAndRole(cmd.email(), cmd.role())).willReturn(false);
     given(passwordEncoder.encode(cmd.password())).willReturn("encodedPassword");
@@ -77,7 +77,7 @@ class SignupServiceTest {
   @DisplayName("Scenario: 실패 - 이미 해당 권한으로 가입된 이메일로 가입 시도 시 예외가 발생한다")
   void signup_fail_duplicate_email() {
     // Given
-    SignupCmd cmd = new SignupCmd("duplicate@vision.io", "password", "User", Role.USER);
+    SignupCmd cmd = new SignupCmd("duplicate@dough.io", "password", "User", Role.USER);
     given(manageSignup.existsByEmailAndRole(cmd.email(), cmd.role())).willReturn(true);
     String errorMessage = "이미 해당 권한으로 가입된 이메일입니다.";
     given(messageUtils.getMessage("exception.auth.email_already_exists")).willReturn(errorMessage);

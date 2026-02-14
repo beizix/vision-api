@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "사용자 조회", description = "사용자 상세 정보 조회 API")
 @RestController
-@RequestMapping("/api/v1/user")
+@RequestMapping("/api/v1/user/info")
 @RequiredArgsConstructor
 public class GetUserWebAdapter {
 

@@ -41,7 +41,7 @@ class GetUserWebAdapterTest extends WebMvcTestBase {
         .willReturn(expectedUser);
 
     // When & Then
-    mockMvc.perform(get("/api/v1/user")
+    mockMvc.perform(get("/api/v1/user/info")
         .principal(() -> userId.toString())) // Mocking ID as Principal
         .andDo(print())
         .andExpect(status().isOk())

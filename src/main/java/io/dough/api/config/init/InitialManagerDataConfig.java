@@ -22,13 +22,13 @@ public class InitialManagerDataConfig implements CommandLineRunner {
     log.info("✦ Initializing manager data: Creating Super Manager account...");
 
     try {
-      SignupCmd adminCmd = new SignupCmd(
-          "admin@dough.io",
-          "admin1@#$",
+      SignupCmd managerCmd = new SignupCmd(
+          "manager@dough.io",
+          "manager1@#$",
           "SuperManager",
           Role.MANAGER);
 
-      signupUseCase.operate(adminCmd);
+      signupUseCase.operate(managerCmd);
       log.info("✦ Super Manager account created successfully.");
     } catch (Exception e) {
       log.warn("✦ Super Manager account initialization skipped: {}", e.getMessage());

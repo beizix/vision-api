@@ -12,7 +12,7 @@ class GetS3FileURLAdapterTest {
 
   private GetS3FileURLAdapter getS3FileURLAdapter;
 
-  private final String cloudFrontDomain = "cdn.vision.io";
+  private final String cloudFrontDomain = "cdn.dough.io";
   private final String bucketFolder = "uploads";
 
   @BeforeEach
