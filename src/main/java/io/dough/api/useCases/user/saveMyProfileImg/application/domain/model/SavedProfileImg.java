@@ -5,8 +5,6 @@ import java.util.UUID;
 
 public record SavedProfileImg(
     UUID id,
-    FileUploadType type,
-    String path,
     String name,
     String originName,
     Long fileLength,

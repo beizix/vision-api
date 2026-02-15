@@ -8,7 +8,6 @@ public record MyProfile(
     UUID id,
     String email,
     String displayName,
-    Role role,
     LocalDateTime createdAt,
     UUID profileImageId,
     String profileImageUrl) {}

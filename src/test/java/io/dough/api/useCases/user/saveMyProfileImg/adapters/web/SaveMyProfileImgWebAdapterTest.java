@@ -39,8 +39,6 @@ class SaveMyProfileImgWebAdapterTest extends WebMvcTestBase {
     SavedProfileImg mockResult =
         new SavedProfileImg(
             savedFileId,
-            FileUploadType.MY_PROFILE_IMG,
-            "/user/profile/img",
             "unique_profile.png",
             "profile.png",
             (long) file.getSize(),

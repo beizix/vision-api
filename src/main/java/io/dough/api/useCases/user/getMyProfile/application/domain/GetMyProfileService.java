@@ -27,7 +27,6 @@ public class GetMyProfileService implements GetMyProfileUseCase {
       loaded.id(),
       loaded.email(),
       loaded.displayName(),
-      loaded.role(),
       loaded.createdAt(),
       loaded.profileImageId(),
       profileImageUrl);

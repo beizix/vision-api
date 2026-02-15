@@ -34,8 +34,6 @@ public class SaveMyProfileImgService implements SaveMyProfileImgUseCase {
 
               return new SavedProfileImg(
                   file.id(),
-                  file.type(),
-                  file.path(),
                   file.name(),
                   file.originName(),
                   file.fileLength(),

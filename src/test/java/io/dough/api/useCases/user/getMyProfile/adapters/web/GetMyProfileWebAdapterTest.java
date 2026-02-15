@@ -36,9 +36,8 @@ class GetMyProfileWebAdapterTest extends WebMvcTestBase {
             userId,
             email,
             "Test User",
-            Role.USER,
             LocalDateTime.now(),
-            null,
+            null, // profileImageId
             "http://example.com/profile.png");
 
     given(getMyProfileUseCase.operate(any(GetMyProfileCmd.class))).willReturn(expectedUser);
