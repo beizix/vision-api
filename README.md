@@ -4,10 +4,16 @@
   <img src="./docs/img/dough.png" width="400" alt="Dough API Logo">
 </p>
 
-**Dough API**는 빵이나 피자의 토대가 되는 반죽처럼, 개발자가 어떤 창의적인 애플리케이션을 만들더라도 그 든든한 기초가 되어주는 개발 프레임워크 입니다.
+## Dough API: The Starter Kit for Scalable Backend
 
-본 프로젝트는 효율적인 파일 관리와 안전한 사용자 인증을 제공하는 백엔드 API 서비스 입니다. 헥사고날 아키텍처(Hexagonal Architecture)와 TDD(London
-School) 방식을 채택하여 높은 유지보수성과 테스트 신뢰도를 보장합니다.
+**Dough API**는 빵의 토대가 되는 반죽처럼, 비즈니스 로직에만 집중할 수 있도록 돕는 **Backend Boilerplate**입니다.
+
+단순히 코드를 모아놓은 것을 넘어, **헥사고날 아키텍처**를 기반으로 설계되어 인프라 변화에 유연하며, **London School TDD** 방식을 엄격히 준수하여 '실패 없는 배포'를 지향합니다.
+
+- **Ready-to-Use:** 파일 관리 및 보안 인증 시스템 즉시 가동 가능
+- **High Maintainability:** 도메인 중심 설계로 비즈니스 요구사항 변경에 최적화
+- **Trustworthy:** 촘촘한 테스트 코드로 검증된 안정성
+
 
 ## 🌟 주요 기능
 
