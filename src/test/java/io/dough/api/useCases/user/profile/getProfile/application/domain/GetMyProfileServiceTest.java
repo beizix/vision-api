@@ -1,4 +1,4 @@
-package io.dough.api.useCases.user.getProfile.application.domain;
+package io.dough.api.useCases.user.profile.getProfile.application.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;

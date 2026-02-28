@@ -1,4 +1,4 @@
-package io.dough.api.useCases.user.saveProfileImg.adapters.web;
+package io.dough.api.useCases.user.profile.saveProfileImg.adapters.web;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;

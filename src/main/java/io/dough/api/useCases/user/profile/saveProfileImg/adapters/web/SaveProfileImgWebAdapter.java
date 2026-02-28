@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-@Tag(name = "사용자 정보", description = "로그인한 사용자 관련 API")
+@Tag(name = "Profile", description = "사용자 프로필 관련 API")
 @RestController
 @RequestMapping({"/api/v1/user/profile/img", "/api/v1/manager/profile/img"})
 @RequiredArgsConstructor

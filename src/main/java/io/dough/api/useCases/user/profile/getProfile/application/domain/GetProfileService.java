@@ -21,14 +21,14 @@ public class GetProfileService implements GetProfileUseCase {
     ProfileLoaded loaded = loadProfile.operate(cmd.id());
 
     String profileImageUrl =
-      loaded.profileImageId() != null ? getFileURLUseCase.operate(loaded.profileImageId()) : null;
+        loaded.profileImageId() != null ? getFileURLUseCase.operate(loaded.profileImageId()) : null;
 
     return new Profile(
-      loaded.id(),
-      loaded.email(),
-      loaded.displayName(),
-      loaded.createdAt(),
-      loaded.profileImageId(),
-      profileImageUrl);
+        loaded.id(),
+        loaded.email(),
+        loaded.displayName(),
+        loaded.createdAt(),
+        loaded.profileImageId(),
+        profileImageUrl);
   }
 }

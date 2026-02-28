@@ -1,4 +1,4 @@
-package io.dough.api.useCases.user.getProfile.adapters.persistence;
+package io.dough.api.useCases.user.profile.getProfile.adapters.persistence;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

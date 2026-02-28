@@ -1,4 +1,4 @@
-package io.dough.api.useCases.user.getProfile.adapters.web;
+package io.dough.api.useCases.user.profile.getProfile.adapters.web;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -45,7 +45,8 @@ class GetProfileWebAdapterTest extends WebMvcTestBase {
     // When & Then
     mockMvc
         .perform(
-            get("/api/v1/user/profile").principal(() -> userId.toString())) // Mocking ID as Principal
+            get("/api/v1/user/profile")
+                .principal(() -> userId.toString())) // Mocking ID as Principal
         .andDo(print())
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.id").value(userId.toString()))

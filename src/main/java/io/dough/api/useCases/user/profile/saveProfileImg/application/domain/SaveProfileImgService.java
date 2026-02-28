@@ -33,11 +33,7 @@ public class SaveProfileImgService implements SaveProfileImgUseCase {
               String referURL = getFileURLUseCase.operate(file.id());
 
               return new SavedProfileImg(
-                  file.id(),
-                  file.name(),
-                  file.originName(),
-                  file.fileLength(),
-                  referURL);
+                  file.id(), file.name(), file.originName(), file.fileLength(), referURL);
             });
   }
 }

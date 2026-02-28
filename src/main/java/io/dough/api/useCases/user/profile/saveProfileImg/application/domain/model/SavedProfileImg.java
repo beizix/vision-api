@@ -3,8 +3,4 @@ package io.dough.api.useCases.user.profile.saveProfileImg.application.domain.mod
 import java.util.UUID;
 
 public record SavedProfileImg(
-    UUID id,
-    String name,
-    String originName,
-    Long fileLength,
-    String referURL) {}
+    UUID id, String name, String originName, Long fileLength, String referURL) {}

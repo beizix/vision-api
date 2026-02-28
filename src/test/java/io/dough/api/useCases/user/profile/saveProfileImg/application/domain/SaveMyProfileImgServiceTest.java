@@ -1,4 +1,4 @@
-package io.dough.api.useCases.user.saveProfileImg.application.domain;
+package io.dough.api.useCases.user.profile.saveProfileImg.application.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -57,7 +57,10 @@ class SaveMyProfileImgServiceTest {
 
     given(
             saveFileUseCase.operate(
-                eq(FileUploadType.MY_PROFILE_IMG), any(), eq("profile.png"), eq((long) content.length)))
+                eq(FileUploadType.MY_PROFILE_IMG),
+                any(),
+                eq("profile.png"),
+                eq((long) content.length)))
         .willReturn(Optional.of(mockSaveFile));
     given(getFileURLUseCase.operate(savedFileId)).willReturn(expectedUrl);
 
